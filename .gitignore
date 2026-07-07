@@ -1,0 +1,34 @@
+# ======================
+# Node
+# ======================
+frontend-react/node_modules/
+frontend-react/dist/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Environment
+.env
+.env.*
+
+# XAMPP
+backend-wordpress/wp-config.php
+
+# WordPress uploads
+backend-wordpress/wp-content/uploads/
+
+# Cache
+backend-wordpress/wp-content/cache/
+
+# Vendor
+vendor/
+
+# npm
+package-lock.json
