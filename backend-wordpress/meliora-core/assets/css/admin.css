@@ -1,0 +1,138 @@
+/* ==========================================================
+   MELIORA HUB ADMIN
+========================================================== */
+
+.postbox {
+  border: none !important;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 28px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.postbox-header {
+  background: #0f172a;
+  padding: 18px 24px;
+}
+
+.postbox-header h2 {
+  color: #fff !important;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.inside {
+  padding: 28px !important;
+}
+
+/* FIELDS */
+
+.mh-field {
+  margin-bottom: 26px;
+}
+
+.mh-field:last-child {
+  margin-bottom: 0;
+}
+
+.mh-field label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #334155;
+}
+
+.mh-field input,
+.mh-field textarea,
+.mh-field select {
+  width: 100%;
+  border: 1px solid #d1d5db !important;
+  border-radius: 12px !important;
+  padding: 12px 16px !important;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.mh-field textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.mh-field input:focus,
+.mh-field textarea:focus,
+.mh-field select:focus {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15) !important;
+}
+
+.mh-note {
+  margin-top: 14px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.button-primary {
+  border-radius: 10px !important;
+}
+
+/* STEP BUILDER */
+
+.mh-step-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.mh-step-toggle {
+  width: 100%;
+  padding: 16px 18px;
+  border: 0;
+  background: #f8fafc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.mh-step-toggle:hover {
+  background: #f1f5f9;
+}
+
+.mh-step-body {
+  padding: 22px;
+}
+
+.mh-step-card.collapsed .mh-step-body {
+  display: none;
+}
+
+.mh-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.mh-remove-step {
+  margin-top: 8px !important;
+  color: #b91c1c !important;
+  border-color: #fecaca !important;
+}
+
+.mh-remove-step:hover {
+  background: #fef2f2 !important;
+}
+
+#mh-add-step {
+  margin-top: 12px !important;
+}
+
+@media (max-width: 768px) {
+  .mh-row {
+    grid-template-columns: 1fr;
+  }
+}
