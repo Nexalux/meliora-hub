@@ -1,68 +1,65 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+
+import {
+  FaBookOpen,
+  FaBullseye,
+  FaLightbulb,
+  FaLink,
+  FaGithub,
+  FaYoutube,
+  FaSignal,
+  FaClock
+} from "react-icons/fa6";
+
+import { getRoadmap } from "../api/wordpress";
+
+import ProgressCard from "../components/ProgressCard";
+import InfoCard from "../components/InfoCard";
+import SkillTag from "../components/SkillTag";
+import ResourceCard from "../components/ResourceCard";
+
 import "../styles/details.css";
 
 function RoadmapDetails() {
+
   const { id } = useParams();
   const [roadmap, setRoadmap] = useState(null);
-
-  // start as null so we can tell “no‐data yet” from “zero steps”
-  const [steps, setSteps] = useState(null);
-
-  // derive a loading flag instead of storing it separately
-  const loading = roadmap === null || steps === null;
-
-  // ✅ Lazy localStorage initialization
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [completed, setCompleted] = useState(() => {
     const saved = localStorage.getItem(`progress-${id}`);
+
     return saved ? JSON.parse(saved) : {};
+
   });
 
   useEffect(() => {
-    let isMounted = true;
 
-    // Fetch roadmap with taxonomy + media
-    fetch(
-      `http://meliorahub.local/wp-json/wp/v2/roadmaps/${id}?_embed`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (isMounted) {
-          setRoadmap(data);
-        }
-      });
+    async function loadRoadmap() {
 
-    // Fetch steps
-    fetch(
-      "http://meliorahub.local/wp-json/wp/v2/roadmap_steps?_embed"
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (isMounted) {
-          const filtered = data
-            .filter(
-              (step) =>
-                step.acf?.parent_roadmap == id
-            )
-            .sort(
-              (a, b) =>
-                a.acf?.step_order -
-                b.acf?.step_order
-            );
+      try {
+        setLoading(true);
+        const data = await getRoadmap(id);
+        setRoadmap(data);
+      }
+      catch (err) {
+        setError(err.message);
+      }
+      finally {
+        setLoading(false);
+      }
+    }
+    loadRoadmap();
 
-          setSteps(filtered);
-        }
-      });
-
-    return () => {
-      isMounted = false;
-    };
   }, [id]);
 
-  const toggleStep = (stepId) => {
+  function toggleStep(index) {
+
     const updated = {
       ...completed,
-      [stepId]: !completed[stepId],
+      [index]: !completed[index]
+
     };
 
     setCompleted(updated);
@@ -70,161 +67,268 @@ function RoadmapDetails() {
       `progress-${id}`,
       JSON.stringify(updated)
     );
-  };
 
-  const completedCount =
-    Object.values(completed).filter(Boolean).length;
+  }
 
+ function toList(text = "") {
+  return text
+    .split("\n")
+    .map(item => item.trim())
+    .filter(Boolean);
+}
+
+function toSkills(text = "") {
+  return text
+    .split(/\n|,/)
+    .map(item => item.trim())
+    .filter(Boolean);
+}
+
+  const steps = roadmap?.data?.steps || [];
+  const completedCount = Object.values(completed).filter(Boolean).length;
   const progressPercent =
-    steps && steps.length > 0
+    steps.length
       ? Math.round(
           (completedCount / steps.length) * 100
         )
       : 0;
 
-  if (loading)
+  if (loading) {
     return (
       <div className="details-page">
         Loading...
       </div>
     );
+  }
 
-  if (!roadmap)
+  if (error) {
+    return (
+      <div className="details-page">
+        {error}
+      </div>
+    );
+  }
+
+  if (!roadmap) {
     return (
       <div className="details-page">
         Roadmap not found.
       </div>
     );
-
-  // 🔥 Extract difficulty taxonomy safely
-  const terms =
-    roadmap._embedded?.["wp:term"] || [];
-
-  const difficultyTerm = terms
-    .flat()
-    .find(
-      (term) =>
-        term.taxonomy === "difficulty"
-    );
-
-  const difficultyName =
-    difficultyTerm?.name || "";
+  }
 
   return (
-    <div className="details-page">
-      <Link
-        to="/"
-        className="back-link"
-      >
-        ← Back to Roadmaps
-      </Link>
+  <div className="details-page">
+    <Link
+      to="/"
+      className="back-link"
+    >
+      ← Back to Roadmaps
+    </Link>
 
-      {/* HEADER */}
-      <div className="details-header">
-        <h1
-          dangerouslySetInnerHTML={{
-            __html:
-              roadmap.title.rendered,
-          }}
-        />
+    {/* HEADER */}
 
-        <div className="details-meta">
-          {difficultyName && (
-            <span className="badge">
-              {difficultyName}
+  <div className="roadmap-hero">
+
+    <h1>{roadmap.title}</h1>
+
+    <p className="roadmap-description">
+        {roadmap.data.basic.short_description}
+    </p>
+
+    <div className="roadmap-badges">
+
+        {roadmap.difficulty && (
+            <span className="roadmap-badge">
+              <span className="badge-icon">
+                    <FaSignal />
+               </span>               
+               {roadmap.difficulty.name}
             </span>
-          )}
-
-          {roadmap.acf?.duration && (
-            <span className="duration">
-              {roadmap.acf.duration}
-            </span>
-          )}
-        </div>
-      </div>
-
-      {/* PROGRESS */}
-      <div className="progress-section">
-        <div className="progress-info">
-          <span>Progress</span>
-          <strong>
-            {progressPercent}%
-          </strong>
-        </div>
-
-        <div className="progress-bar">
-          <div
-            className="progress-fill"
-            style={{
-              width: `${progressPercent}%`,
-            }}
-          />
-        </div>
-      </div>
-
-      {/* STEPS */}
-      <div className="steps-section">
-        {!steps || steps.length === 0 ? (
-          <p>No steps available.</p>
-        ) : (
-          steps.map((step) => (
-            <div
-              key={step.id}
-              className={`step-card ${
-              completed[step.id] ? "completed" : ""
-              }`}
-            >
-              <div className="step-header">
-                <input
-                  type="checkbox"
-                  checked={
-                    !!completed[step.id]
-                  }
-                  onChange={() =>
-                    toggleStep(step.id)
-                  }
-                />
-
-                <h3
-                  dangerouslySetInnerHTML={{
-                    __html: `${
-                      step.acf?.step_order
-                    }. ${
-                      step.title
-                        .rendered
-                    }`,
-                  }}
-                />
-              </div>
-
-              {step.acf?.description && (
-                <p className="step-description">
-                  {
-                    step.acf
-                      .description
-                  }
-                </p>
-              )}
-
-              {step.acf?.resource_link && (
-                <a
-                  href={
-                    step.acf
-                      .resource_link
-                  }
-                  target="_blank"
-                  rel="noreferrer"
-                  className="step-link"
-                >
-                  View Resource →
-                </a>
-              )}
-            </div>
-          ))
         )}
-      </div>
-    </div>
-  );
-}
 
+        {roadmap.duration && (
+            <span className="roadmap-badge">
+                <span className="badge-icon">
+                    <FaClock />
+                </span>
+                {roadmap.duration.name}
+            </span>
+        )}
+
+    </div>
+
+</div>
+
+    {/* PROGRESS */}
+
+   <ProgressCard
+  completedCount={completedCount}
+  totalSteps={steps.length}
+  progressPercent={progressPercent}
+/>
+
+    {/* LEARNING */}
+
+    <div className="details-grid">
+
+  <InfoCard
+    icon={<FaBookOpen />}
+    title="Prerequisites"
+  >
+
+    <ul className="info-list">
+
+      {toList(
+        roadmap.data.learning.prerequisites
+      ).map((item, index) => (
+
+        <li key={index}>{item}</li>
+
+      ))}
+
+    </ul>
+
+  </InfoCard>
+
+  <InfoCard
+    icon={<FaLink />}
+    title="Resources"
+  >
+
+    <div className="resource-list">
+
+      <ResourceCard
+        icon={<FaBookOpen />}
+        title="Official Docs"
+        url={roadmap.data.resources.docs}
+      />
+
+      <ResourceCard
+        icon={<FaGithub />}
+        title="GitHub"
+        url={roadmap.data.resources.github}
+      />
+
+      <ResourceCard
+        icon={<FaLink />}
+        title="Roadmap.sh"
+        url={roadmap.data.resources.roadmapsh}
+      />
+
+      <ResourceCard
+        icon={<FaYoutube />}
+        title="YouTube"
+        url={roadmap.data.resources.youtube}
+      />
+
+      <ResourceCard
+    icon={<FaBookOpen />}
+    title="Course"
+    url={roadmap.data.resources.course}
+/>
+
+    </div>
+
+  </InfoCard>
+
+</div>
+
+<InfoCard
+  icon={<FaBullseye />}
+  title="Learning Outcomes"
+>
+
+  <ul className="info-list">
+
+    {toList(
+      roadmap.data.learning.outcomes
+    ).map((item, index) => (
+
+      <li key={index}>{item}</li>
+
+    ))}
+
+  </ul>
+
+</InfoCard>
+
+<InfoCard
+  icon={<FaLightbulb />}
+  title="Skills Covered"
+>
+
+  <div className="skills-container">
+
+    {toSkills(
+      roadmap.data.learning.skills
+    ).map((skill, index) => (
+
+      <SkillTag
+        key={index}
+        skill={skill}
+      />
+
+    ))}
+
+  </div>
+
+</InfoCard>
+
+    {/* STEPS */}
+
+    <div className="steps-section">
+
+      <div className="section-heading">
+
+    <h2>Learning Steps</h2>
+
+    <p>
+        Complete each step to track your progress.
+    </p>
+
+</div>
+
+      {steps.length === 0 ? (
+        <p>No learning steps yet.</p>
+      ) : (
+        steps.map((step, index) => (
+          <div
+            key={index}
+            className={`step-card ${
+              completed[index] ? "completed" : ""
+            }`}
+          >
+            <div className="step-header">
+              <input
+                type="checkbox"
+                checked={!!completed[index]}
+                onChange={() =>
+                  toggleStep(index)
+                }
+              />
+              <h3>
+                {index + 1}. {step.title}
+              </h3>
+            </div>
+            {step.description && (
+              <p className="step-description">
+                {step.description}
+              </p>
+            )}
+            <div className="step-meta">
+              <span>
+                <FaClock /> {step.duration}
+              </span>
+              <span>
+                <FaBullseye /> {step.difficulty}
+              </span>
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  </div>
+);
+}
 export default RoadmapDetails;
