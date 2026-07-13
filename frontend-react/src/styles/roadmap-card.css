@@ -63,6 +63,8 @@
   margin-bottom:18px;
   display:-webkit-box;
   -webkit-line-clamp:3;
+  /* Standard property for browsers that support the newer spec */
+  line-clamp:3;
   -webkit-box-orient:vertical;
   overflow:hidden;
 
