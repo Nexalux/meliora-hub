@@ -1,5 +1,5 @@
 .page {
-  padding: 60px 80px;
+  padding: 60px 70px;
   max-width: 1400px;
   margin: auto;
 }
@@ -206,21 +206,31 @@
   border-color: #38bdf8;
 }
 
+.filter-btn{
+min-height:42px;
+
+}
+
 /* GRID */
 
 .grid{
-  
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(320px,1fr));
-gap:28px;
-align-items:stretch;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(320px,1fr)
+        );
+
+    gap:28px;
 
 }
 
 /* EMPTY STATE */
 
 .empty-state{
+
     text-align:center;
     padding:80px 20px;
     border:1px dashed #334155;
