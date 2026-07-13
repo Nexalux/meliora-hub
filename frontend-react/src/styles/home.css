@@ -209,25 +209,38 @@
 /* GRID */
 
 .grid{
-
+  
 display:grid;
-
 grid-template-columns:
 repeat(auto-fit,minmax(320px,1fr));
-
 gap:28px;
-
 align-items:stretch;
 
 }
 
 /* EMPTY STATE */
 
-.empty-state {
-  margin-top: 40px;
-  color: #64748b;
-  text-align: center;
-  font-size: 15px;
+.empty-state{
+    text-align:center;
+    padding:80px 20px;
+    border:1px dashed #334155;
+    border-radius:18px;
+    color:#94a3b8;
+
+}
+
+.empty-state h3{
+    color:white;
+    margin-bottom:10px;
+    font-size:24px;
+
+}
+
+.empty-state p{
+    max-width:420px;
+    margin:auto;
+    line-height:1.7;
+
 }
 
 /* PAGINATION */
@@ -401,4 +414,27 @@ transform:translateY(-1px);
 background:#38bdf8;
 color:#0f172a;
 border-color:#38bdf8;
+}
+
+/* ==========================================================
+   RESULTS BAR
+========================================================== */
+
+.results-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+
+}
+
+.results-count{
+    color:#94a3b8;
+    font-size:15px;
+
+}
+
+.results-count strong{
+    color:#f8fafc;
+
 }
