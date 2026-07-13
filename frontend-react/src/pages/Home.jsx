@@ -1,3 +1,4 @@
+import RoadmapCard from "../components/RoadmapCard";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { getRoadmaps } from "../api/wordpress";
@@ -114,35 +115,49 @@ function Home() {
 
   return (
     <div className="page">
-      {/* HERO */}
-      <div className="hero">
-        <div className="hero-glow"></div>
+      
+{/* ================= HERO ================= */}
 
-        <h1 className="hero-title">
-          Master Tech Skills Through Roadmaps
-        </h1>
+<section className="hero">
 
-        <p className="hero-subtitle">
-          Explore structured learning roadmaps for developers on Meliora Hub.
-        </p>
+  <div className="hero-content">
 
-        <input
-          type="text"
-          className="hero-search"
-          placeholder="Search skills, roadmaps..."
-          value={searchInput}
-          onChange={(e) => {
-            setSearchInput(e.target.value);
-            resetPage();
-          }}
-        />
-      </div>
+    <span className="hero-label">
+      MELIORA HUB
+    </span>
+
+    <h1 className="hero-title">
+      Master Tech Skills
+      <br />
+      Through Structured Roadmaps
+    </h1>
+
+    <p className="hero-subtitle">
+      Learn modern technologies through carefully
+      structured roadmaps designed for beginners,
+      intermediate learners and professionals.
+    </p>
+
+    <input
+      type="text"
+      className="hero-search"
+      placeholder="Search roadmaps..."
+      value={searchInput}
+      onChange={(e) => {
+        setSearchInput(e.target.value);
+        resetPage();
+      }}
+    />
+
+  </div>
+
+</section>
 
       {/* CONTINUE LEARNING */}
       {(() => {
         const startedRoadmaps = roadmaps.filter((roadmap) => {
           const completed = JSON.parse(
-            localStorage.getItem(`roadmap-${roadmap.id}`) || "[]"
+            localStorage.getItem(`progress-${roadmap.id}`) || "[]"
           );
 
           return completed.length > 0;
@@ -157,7 +172,7 @@ function Home() {
             <div className="continue-grid">
               {startedRoadmaps.map((roadmap) => {
                 const completed = JSON.parse(
-                  localStorage.getItem(`roadmap-${roadmap.id}`) || "[]"
+                  localStorage.getItem(`progress-${roadmap.id}`) || "[]"
                 );
 
                 const totalSteps = roadmap.data?.steps?.length || 1;
@@ -194,86 +209,99 @@ function Home() {
         );
       })()}
 
-      {/* CATEGORY FILTER */}
-      <h2 className="section-title">Browse by Category</h2>
+      {/* ================= BROWSE SECTION ================= */}
 
-      <div className="category-grid">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            className={`filter-btn ${
-              activeCategory === cat ? "active" : ""
-            }`}
-            onClick={() => {
-              setActiveCategory(cat);
-              resetPage();
-            }}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
+<section className="browse-section">
+  <div className="browse-header">
 
-      {/* DIFFICULTY FILTER */}
-      <div className="filters">
-        {difficulties.map((diff) => (
-          <button
-            key={diff}
-            className={`filter-btn ${
-              activeDifficulty === diff ? "active" : ""
-            }`}
-            onClick={() => {
-              setActiveDifficulty(diff);
-              resetPage();
-            }}
-          >
-            {diff === "All" ? "All Levels" : diff}
-          </button>
-        ))}
-      </div>
+    <h2>
+      Browse Roadmaps
+    </h2>
+
+    <p>
+      Discover structured learning paths based on your
+      interests and experience level.
+    </p>
+
+  </div>
+
+  <div className="filter-group">
+
+    <span className="filter-title">
+      Categories
+    </span>
+
+    <div className="category-grid">
+
+      {categories.map((cat) => (
+
+        <button
+          key={cat}
+          className={`filter-btn ${
+            activeCategory === cat
+              ? "active"
+              : ""
+          }`}
+          onClick={() => {
+            setActiveCategory(cat);
+            resetPage();
+          }}
+        >
+          {cat}
+        </button>
+
+      ))}
+
+    </div>
+
+  </div>
+
+  <div className="filter-group">
+
+    <span className="filter-title">
+      Difficulty
+    </span>
+
+    <div className="filters">
+
+      {difficulties.map((diff) => (
+
+        <button
+          key={diff}
+          className={`filter-btn ${
+            activeDifficulty === diff
+              ? "active"
+              : ""
+          }`}
+          onClick={() => {
+            setActiveDifficulty(diff);
+            resetPage();
+          }}
+        >
+          {diff === "All"
+            ? "All Levels"
+            : diff}
+        </button>
+
+      ))}
+
+    </div>
+
+  </div>
+
+</section>
 
       {/* ROADMAP GRID */}
       {paginatedRoadmaps.length === 0 ? (
         <div className="empty-state">No roadmaps found.</div>
       ) : (
         <div className="grid">
-          {paginatedRoadmaps.map((roadmap) => {
-            const image = roadmap.image;
-
-            return (
-              <Link
-                key={roadmap.id}
-                to={`/roadmap/${roadmap.id}`}
-                style={{ textDecoration: "none" }}
-              >
-                <div className="card">
-                  {image && (
-                    <div className="card-image-wrapper">
-                      <img
-                        src={image}
-                        alt={roadmap.title}
-                        className="card-image"
-                      />
-
-                      <div className="card-overlay" />
-                    </div>
-                  )}
-
-                  <div className="card-content">
-                    <h2 className="card-title">{roadmap.title}</h2>
-
-                    {(roadmap.difficulty || roadmap.duration) && (
-                      <p className="card-meta">
-                        {roadmap.difficulty?.name}
-                        {roadmap.difficulty && roadmap.duration ? " • " : ""}
-                        {roadmap.duration?.name}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
+          {paginatedRoadmaps.map((roadmap) => (
+  <RoadmapCard
+    key={roadmap.id}
+    roadmap={roadmap}
+  />
+))}
         </div>
       )}
 
