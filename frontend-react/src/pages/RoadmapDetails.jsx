@@ -13,13 +13,12 @@ import {
 } from "react-icons/fa6";
 
 import { getRoadmap } from "../api/wordpress";
+import ProgressCard from "../components/cards/ProgressCard";
+import InfoCard from "../components/cards/InfoCard";
+import ResourceCard from "../components/cards/ResourceCard";
+import SkillTag from "../components/ui/SkillTag";
 
-import ProgressCard from "../components/ProgressCard";
-import InfoCard from "../components/InfoCard";
-import SkillTag from "../components/SkillTag";
-import ResourceCard from "../components/ResourceCard";
-
-import "../styles/details.css";
+import "../styles/pages/details.css";
 
 function RoadmapDetails() {
 
