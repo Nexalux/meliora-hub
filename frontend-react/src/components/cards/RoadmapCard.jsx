@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "../styles/roadmap-card.css";
+import "../../styles/components/roadmap-card.css";
 
 import {
   FaArrowRight,

@@ -1,8 +1,8 @@
-import RoadmapCard from "../components/RoadmapCard";
+import RoadmapCard from "../components/cards/RoadmapCard";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { getRoadmaps } from "../api/wordpress";
-import "../styles/home.css";
+import "../styles/pages/home.css";
 
 function Home() {
   const [roadmaps, setRoadmaps] = useState([]);
