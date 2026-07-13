@@ -110,8 +110,17 @@ function Home() {
   }
 
   if (error) {
-    return <div className="page">Error: {error}</div>;
-  }
+  return (
+    <div className="page">
+      <div className="empty-state">
+        <h3>Something went wrong</h3>
+        <p>{error}</p>
+
+      </div>
+    </div>
+  );
+
+}
 
   return (
     <div className="page">
@@ -156,11 +165,14 @@ function Home() {
       {/* CONTINUE LEARNING */}
       {(() => {
         const startedRoadmaps = roadmaps.filter((roadmap) => {
-          const completed = JSON.parse(
-            localStorage.getItem(`progress-${roadmap.id}`) || "[]"
-          );
+         const completed = JSON.parse(
+  localStorage.getItem(`progress-${roadmap.id}`) || "{}"
+);
 
-          return completed.length > 0;
+const completedCount =
+  Object.values(completed).filter(Boolean).length;
+
+return completedCount > 0;
         });
 
         if (startedRoadmaps.length === 0) return null;
@@ -172,14 +184,18 @@ function Home() {
             <div className="continue-grid">
               {startedRoadmaps.map((roadmap) => {
                 const completed = JSON.parse(
-                  localStorage.getItem(`progress-${roadmap.id}`) || "[]"
-                );
+  localStorage.getItem(`progress-${roadmap.id}`) || "{}"
+);
 
-                const totalSteps = roadmap.data?.steps?.length || 1;
+const completedCount =
+  Object.values(completed).filter(Boolean).length;
 
-                const progress = Math.round(
-                  (completed.length / totalSteps) * 100
-                );
+const totalSteps =
+  roadmap.data?.steps?.length || 1;
+
+const progress = Math.round(
+  (completedCount / totalSteps) * 100
+);
 
                 return (
                   <Link
@@ -291,9 +307,30 @@ function Home() {
 
 </section>
 
+{/* RESULTS */}
+
+<div className="results-bar">
+  <p className="results-count">
+
+    Showing <strong>{filteredRoadmaps.length}</strong>{" "}
+
+    {filteredRoadmaps.length === 1
+      ? "Roadmap"
+      : "Roadmaps"}
+
+  </p>
+
+</div>
+
       {/* ROADMAP GRID */}
+
       {paginatedRoadmaps.length === 0 ? (
-        <div className="empty-state">No roadmaps found.</div>
+
+        <div className="empty-state">
+         <h3>No roadmaps found</h3>
+         <p> Try changing your search or filters. </p>
+         </div>
+
       ) : (
         <div className="grid">
           {paginatedRoadmaps.map((roadmap) => (
