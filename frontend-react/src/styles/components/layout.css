@@ -32,4 +32,57 @@
 
 .main-content {
   min-height: calc(100vh - 80px);
+
+}
+
+.nav-login {
+  padding: 9px 16px;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  color: #e2e8f0;
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-login:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:22px;
+
+}
+
+.nav-user{
+    display:flex;
+    align-items:center;
+    gap:16px;
+
+}
+
+.nav-username{
+    color:#e2e8f0;
+    font-size:14px;
+    font-weight:500;
+
+}
+
+.logout-btn{
+    padding:8px 14px;
+    border:none;
+    border-radius:8px;
+    background:#ef4444;
+    color:white;
+    cursor:pointer;
+    transition:.25s;
+
+}
+
+.logout-btn:hover{
+    background:#dc2626;
+
 }

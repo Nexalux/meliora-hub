@@ -3,146 +3,244 @@
 ========================================================== */
 
 .roadmap-card {
-
-  display: flex;
-  flex-direction: column;
+  position: relative;
   min-height: 220px;
+  overflow: hidden;
+
   background: #111827;
   border: 1px solid #233247;
   border-radius: 20px;
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
 
   transition:
-    transform .25s ease,
-    border-color .25s ease,
-    box-shadow .25s ease;
-
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-.roadmap-card:hover{
-
+.roadmap-card:hover {
   transform: translateY(-5px);
-  border-color:#38bdf8;
+  border-color: #38bdf8;
+
   box-shadow:
-      0 0 0 1px rgba(56,189,248,.08),
-      0 18px 40px rgba(0,0,0,.28);
-
+    0 0 0 1px rgba(56, 189, 248, 0.08),
+    0 18px 40px rgba(0, 0, 0, 0.28);
 }
 
-/* ===================================== */
+/* ==========================================================
+   CLICKABLE CARD AREA
+========================================================== */
 
-.roadmap-card-content{
+.roadmap-card-link {
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
 
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  padding:22px;
-
+  color: inherit;
+  text-decoration: none;
 }
 
-/* ===================================== */
+/*
+The accent remains in the JSX for now, but is intentionally hidden.
+It can be removed from RoadmapCard.jsx later.
+*/
 
-.roadmap-card-title{
-  font-size:1.7rem;
-  font-weight:700;
-  line-height:1.2;
-  color:#f8fafc;
-  margin-bottom:12px;
-  min-height:52px;
-
+.roadmap-card-accent {
+  display: none;
 }
 
-/* ===================================== */
+/* ==========================================================
+   BOOKMARK BUTTON POSITION
+========================================================== */
 
-.roadmap-card-description{
-  color:#94a3b8;
-  font-size:15px;
-  line-height:1.8;
-  margin-bottom:18px;
-  display:-webkit-box;
-  -webkit-line-clamp:3;
-  /* Standard property for browsers that support the newer spec */
-  line-clamp:3;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-
+.roadmap-bookmark {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
 }
 
-/* ===================================== */
+.bookmark-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-.roadmap-card-tags{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  margin-top:auto;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+
+  border: 1px solid #334155;
+  border-radius: 10px;
+
+  background: #172033;
+  color: #94a3b8;
+
+  font-size: 17px;
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
-.roadmap-tag{
-
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 14px;
-  background:#1e293b;
-  border:1px solid #334155;
-  border-radius:999px;
-  color:#cbd5e1;
-  font-size:13px;
-
+.bookmark-btn:hover {
+  color: #facc15;
+  border-color: #64748b;
+  background: #1e293b;
+  transform: translateY(-1px);
 }
 
-/* ===================================== */
-
-.roadmap-card-footer{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:0 22px 20px;
-  margin-top:auto;
-  color:#38bdf8;
-  font-weight:600;
-
+.bookmark-btn:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 3px;
 }
 
-/* ===================================== */
-
-.roadmap-link{
-  transition:opacity .2s ease;
-
+.bookmark-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
 }
 
-.roadmap-arrow{
-  transition:transform .25s ease;
+/* ==========================================================
+   CARD CONTENT
+========================================================== */
 
+.roadmap-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  padding: 22px;
+  padding-right: 72px;
 }
 
-.roadmap-card:hover .roadmap-link{
-  opacity:.9;
+.roadmap-card-title {
+  min-height: 52px;
+  margin: 0 0 12px;
 
+  color: #f8fafc;
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
-.roadmap-card:hover .roadmap-arrow{
+.roadmap-card-description {
+  margin: 0 0 18px;
 
-  transform:translateX(6px);
+  color: #94a3b8;
+  font-size: 15px;
+  line-height: 1.8;
 
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
 }
 
-/* ===================================== */
+/* ==========================================================
+   ROADMAP TAGS
+========================================================== */
 
-@media(max-width:768px){
+.roadmap-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: auto;
+}
 
-  .roadmap-card{
-    min-height:auto;
+.roadmap-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 
+  padding: 8px 14px;
+
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 999px;
+
+  color: #cbd5e1;
+  font-size: 13px;
+}
+
+/* ==========================================================
+   CARD FOOTER
+========================================================== */
+
+.roadmap-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: auto;
+  padding: 0 22px 20px;
+
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.roadmap-link {
+  transition: opacity 0.2s ease;
+}
+
+.roadmap-arrow {
+  transition: transform 0.25s ease;
+}
+
+.roadmap-card:hover .roadmap-link {
+  opacity: 0.9;
+}
+
+.roadmap-card:hover .roadmap-arrow {
+  transform: translateX(6px);
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 768px) {
+  .roadmap-card,
+  .roadmap-card-link {
+    min-height: auto;
   }
 
-  .roadmap-card-title{
-
-    min-height:auto;
-    font-size:1.45rem;
-
+  .roadmap-card-title {
+    min-height: auto;
+    font-size: 1.45rem;
   }
 
+  .roadmap-card-content {
+    padding: 22px;
+    padding-right: 68px;
+  }
+
+  .roadmap-bookmark {
+    top: 14px;
+    right: 14px;
+  }
+
+  .bookmark-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .roadmap-card-content {
+    padding: 20px;
+    padding-right: 64px;
+  }
+
+  .roadmap-card-footer {
+    padding: 0 20px 18px;
+  }
+
+  .roadmap-tag {
+    padding: 7px 11px;
+    font-size: 12px;
+  }
 }
