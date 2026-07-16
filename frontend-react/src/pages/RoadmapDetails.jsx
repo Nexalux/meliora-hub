@@ -12,7 +12,7 @@ import {
   FaClock
 } from "react-icons/fa6";
 
-import { getRoadmap } from "../api/wordpress";
+import { getRoadmap } from "../api/roadmaps";
 import ProgressCard from "../components/cards/ProgressCard";
 import InfoCard from "../components/cards/InfoCard";
 import ResourceCard from "../components/cards/ResourceCard";
