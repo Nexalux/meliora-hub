@@ -1,0 +1,128 @@
+/* ==========================================================
+   USER MENU
+========================================================== */
+
+.user-menu {
+  position: relative;
+}
+
+.user-menu-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  background: #111827;
+  color: #f8fafc;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    transform .2s ease;
+}
+
+.user-menu-button:hover {
+  background: #172033;
+  border-color: #38bdf8;
+}
+
+.menu-arrow {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* ==========================================================
+   DROPDOWN
+========================================================== */
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 250px;
+  overflow: hidden;
+  border: 1px solid #26354b;
+  border-radius: 16px;
+  background: #111a2b;
+  box-shadow:
+    0 20px 45px rgba(2,8,23,.35);
+
+  z-index: 1000;
+}
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.dropdown-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px;
+  border-bottom: 1px solid #26354b;
+}
+
+.dropdown-header strong {
+  color: #f8fafc;
+}
+
+.dropdown-header small {
+  color: #94a3b8;
+  word-break: break-word;
+}
+
+/* ==========================================================
+   LINKS
+========================================================== */
+
+.user-dropdown a,
+.dropdown-logout {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 14px 18px;
+  border: none;
+  background: transparent;
+  color: #cbd5e1;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+
+  transition:
+    background .2s ease,
+    color .2s ease;
+}
+
+.user-dropdown a:hover,
+.dropdown-logout:hover {
+  background: #172238;
+  color: #38bdf8;
+}
+
+/* ==========================================================
+   LOGOUT
+========================================================== */
+
+.dropdown-logout {
+  border-top: 1px solid #26354b;
+}
+
+.user-dropdown svg {
+  width: 18px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.active-menu-link {
+  background: #172238 !important;
+  color: #38bdf8 !important;
+}
+
+.active-menu-link svg {
+  color: #38bdf8;
+}

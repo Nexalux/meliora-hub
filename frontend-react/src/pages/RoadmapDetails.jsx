@@ -19,6 +19,7 @@ import ResourceCard from "../components/cards/ResourceCard";
 import SkillTag from "../components/ui/SkillTag";
 
 import "../styles/pages/details.css";
+import BookmarkButton from "../components/ui/BookmarkButton";
 
 function RoadmapDetails() {
 
@@ -127,35 +128,49 @@ function toSkills(text = "") {
 
     {/* HEADER */}
 
-  <div className="roadmap-hero">
+<div className="roadmap-hero">
 
-    <h1>{roadmap.title}</h1>
+  <div className="roadmap-hero-top">
 
-    <p className="roadmap-description">
+    <div>
+
+      <h1>{roadmap.title}</h1>
+
+      <p className="roadmap-description">
         {roadmap.data.basic.short_description}
-    </p>
-
-    <div className="roadmap-badges">
-
-        {roadmap.difficulty && (
-            <span className="roadmap-badge">
-              <span className="badge-icon">
-                    <FaSignal />
-               </span>               
-               {roadmap.difficulty.name}
-            </span>
-        )}
-
-        {roadmap.duration && (
-            <span className="roadmap-badge">
-                <span className="badge-icon">
-                    <FaClock />
-                </span>
-                {roadmap.duration.name}
-            </span>
-        )}
+      </p>
 
     </div>
+
+    <BookmarkButton
+      roadmapId={roadmap.id}
+    />
+
+  </div>
+
+  <div className="roadmap-badges">
+
+    {roadmap.difficulty && (
+      <span className="roadmap-badge">
+        <span className="badge-icon">
+          <FaSignal />
+        </span>
+        {roadmap.difficulty.name}
+      </span>
+
+    )}
+
+    {roadmap.duration && (
+      <span className="roadmap-badge">
+        <span className="badge-icon">
+          <FaClock />
+        </span>
+        {roadmap.duration.name}
+      </span>
+
+    )}
+
+  </div>
 
 </div>
 

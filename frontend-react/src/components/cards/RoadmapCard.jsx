@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 import {
   FaArrowRight,
   FaClock,
@@ -8,29 +7,44 @@ import {
 } from "react-icons/fa6";
 
 import BookmarkButton from "../ui/BookmarkButton";
+
 import "../../styles/components/roadmap-card.css";
 
-function RoadmapCard({ roadmap }) {
-
+function RoadmapCard({
+  roadmap,
+  variant = "home",
+}) {
   const description =
+    roadmap.short_description?.trim() ||
     roadmap.data?.basic?.short_description?.trim() ||
     "No description available yet.";
 
   const totalSteps =
-    roadmap.data?.steps?.length || 0;
+    roadmap.steps_count ??
+    roadmap.data?.steps?.length ??
+    0;
+
+  const difficulty =
+    roadmap.difficulty?.name || null;
+
+  const duration =
+    roadmap.duration_text ||
+    (typeof roadmap.duration === "string"
+    ? roadmap.duration
+    : roadmap.duration?.name) ||
+    null;
+
+  const buttonText =
+    variant === "bookmark"
+      ? "Continue Learning"
+      : "Start Learning";
 
   return (
-
-    <div className="roadmap-card">
-
+    <article className="roadmap-card">
       {/* Bookmark */}
 
       <div className="roadmap-bookmark">
-
-       <BookmarkButton
-  roadmapId={roadmap.id}
-/>
-
+        <BookmarkButton roadmapId={roadmap.id} />
       </div>
 
       {/* Clickable Card */}
@@ -39,10 +53,8 @@ function RoadmapCard({ roadmap }) {
         to={`/roadmap/${roadmap.id}`}
         className="roadmap-card-link"
       >
+        <div className="roadmap-card-accent" />
 
-        {/* Accent */}
-
-        <div className="roadmap-card-accent"></div>
         <div className="roadmap-card-content">
 
           <h3 className="roadmap-card-title">
@@ -55,31 +67,25 @@ function RoadmapCard({ roadmap }) {
 
           <div className="roadmap-card-tags">
 
-            {roadmap.difficulty && (
-
+            {difficulty && (
               <span className="roadmap-tag">
                 <FaSignal />
-                {roadmap.difficulty.name}
+                <span>{difficulty}</span>
               </span>
-
             )}
 
-            {roadmap.duration && (
-
+            {duration && (
               <span className="roadmap-tag">
                 <FaClock />
-                {roadmap.duration.name}
+                <span>{duration}</span>
               </span>
-
             )}
 
             {totalSteps > 0 && (
-
               <span className="roadmap-tag">
                 <FaBookOpen />
-                {totalSteps} Steps
+                <span>{totalSteps} Steps</span>
               </span>
-
             )}
 
           </div>
@@ -87,20 +93,18 @@ function RoadmapCard({ roadmap }) {
         </div>
 
         <div className="roadmap-card-footer">
+
           <span className="roadmap-link">
-            Start Learning
+            {buttonText}
           </span>
 
-          <FaArrowRight
-            className="roadmap-arrow"
-          />
+          <FaArrowRight className="roadmap-arrow" />
 
         </div>
+
       </Link>
-    </div>
-
+    </article>
   );
-
 }
 
 export default RoadmapCard;

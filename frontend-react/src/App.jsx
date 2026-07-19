@@ -12,11 +12,11 @@ import RoadmapDetails from "./pages/RoadmapDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Bookmarks from "./pages/Bookmarks";
 
 function App() {
   return (
     <Router>
-
       <Routes>
 
         {/* Public routes with navbar */}
@@ -58,12 +58,16 @@ function App() {
               element={<Dashboard />}
             />
 
+            <Route
+              path="/bookmarks"
+              element={<Bookmarks />}
+            />
+
           </Route>
 
         </Route>
 
       </Routes>
-
     </Router>
   );
 }
