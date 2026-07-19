@@ -1,0 +1,141 @@
+/* ===========================
+   Continue Learning Card
+=========================== */
+
+.continue-card {
+
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 32px;
+    transition:
+        transform .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+
+}
+
+.continue-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--primary-color);
+    box-shadow:0 14px 32px rgba(0,0,0,.08);
+
+}
+
+/* Header */
+
+.continue-header{
+    margin-bottom:32px;
+
+}
+
+.continue-label{
+    display:inline-block;
+    color:var(--primary-color);
+    font-weight:600;
+    font-size:.9rem;
+    margin-bottom:12px;
+
+}
+
+.continue-title{
+    font-size:2rem;
+    font-weight:700;
+    margin-bottom:10px;
+
+}
+
+.continue-meta{
+    color:var(--text-secondary);
+    font-size:1rem;
+
+}
+
+/* Progress */
+
+.progress-section{
+    margin-bottom:32px;
+
+}
+
+.progress-bar{
+    width:100%;
+    height:12px;
+    background:rgba(255,255,255,.08);
+    border-radius:999px;
+    overflow:hidden;
+
+}
+
+.progress-fill{
+    height:100%;
+    border-radius:999px;
+    background:linear-gradient(
+        90deg,
+        #3b82f6,
+        #60a5fa
+    );
+
+}
+
+.progress-info{
+    display:flex;
+    justify-content:space-between;
+    margin-top:12px;
+    color:var(--text-secondary);
+    font-size:.95rem;
+
+}
+
+/* Footer */
+
+.continue-footer{
+    display:flex;
+    justify-content:flex-end;
+
+}
+
+.resume-btn{
+    border:none;
+    cursor:pointer;
+    padding:14px 24px;
+    border-radius:12px;
+    background:var(--primary-color);
+    color:white;
+    font-weight:600;
+    font-size:.95rem;
+    transition:
+        transform .25s ease,
+        filter .25s ease;
+
+}
+
+.resume-btn:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.05);
+
+}
+
+@media(max-width:768px){
+
+    .continue-card{
+        padding:24px;
+
+    }
+
+    .continue-title{
+        font-size:1.6rem;
+
+    }
+
+    .continue-footer{
+        justify-content:stretch;
+
+    }
+
+    .resume-btn{
+        width:100%;
+
+    }
+
+}

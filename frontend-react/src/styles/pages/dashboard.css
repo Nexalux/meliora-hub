@@ -1,0 +1,99 @@
+/* ===========================
+   Dashboard
+=========================== */
+
+.dashboard {
+    max-width: 1200px;
+    margin: 48px auto;
+    padding: 0 32px 60px;
+}
+
+/* ===========================
+   Hero
+=========================== */
+
+.dashboard-hero {
+    margin-bottom: 40px;
+}
+
+.dashboard-hero h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.dashboard-hero p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* ===========================
+   Section
+=========================== */
+
+.dashboard-section {
+    margin-top: 48px;
+}
+
+.dashboard-section h2 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* ===========================
+   Stats Grid
+=========================== */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 992px) {
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width: 768px) {
+
+    .dashboard {
+        padding: 0 20px 40px;
+        margin-top: 32px;
+    }
+
+    .dashboard-hero h1 {
+        font-size: 1.7rem;
+    }
+
+}
+
+/* ===========================
+   Recommendations
+=========================== */
+
+.recommendation-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(280px, 1fr)
+    );
+    gap: 24px;
+}

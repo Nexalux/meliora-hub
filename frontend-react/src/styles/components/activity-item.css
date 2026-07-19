@@ -1,0 +1,70 @@
+/* ===========================
+   Activity Item
+=========================== */
+
+.activity-list {
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+}
+
+.activity-item {
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    transition:
+        transform .3s ease,
+        border-color .3s ease;
+
+}
+
+.activity-item:hover {
+
+    transform: translateX(6px);
+    border-color: var(--primary-color);
+
+}
+
+.activity-icon {
+
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(59,130,246,.12);
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+
+}
+
+.activity-content {
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+.activity-title {
+
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+
+}
+
+.activity-time {
+
+    color: var(--text-secondary);
+    font-size: .9rem;
+
+}

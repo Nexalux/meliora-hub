@@ -38,6 +38,26 @@
   margin-bottom: 44px;
 }
 
+/* ==========================================================
+   HERO HEADER
+========================================================== */
+
+.roadmap-hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+.roadmap-hero-top .bookmark-btn {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  font-size: 20px;
+}
+
 .roadmap-hero h1 {
   margin: 0 0 16px;
   color: #f8fafc;
@@ -444,6 +464,7 @@
   .details-grid {
     grid-template-columns: 1fr;
   }
+  
 
   .roadmap-hero h1 {
     font-size: 40px;
@@ -470,6 +491,15 @@
   .roadmap-hero {
     margin-bottom: 34px;
   }
+
+  .roadmap-hero-top {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.roadmap-hero-top .bookmark-btn {
+  align-self: flex-end;
+}
 
   .roadmap-hero h1 {
     font-size: 34px;

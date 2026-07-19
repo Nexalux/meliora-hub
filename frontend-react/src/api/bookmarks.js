@@ -37,6 +37,32 @@ export async function getBookmarks() {
 
 /*
 |--------------------------------------------------------------------------
+| Get Bookmarked Roadmaps
+|--------------------------------------------------------------------------
+*/
+
+export async function getBookmarkedRoadmaps() {
+  const response = await fetch(
+    `${API_BASE}/bookmarks/roadmaps`,
+    {
+      headers: getAuthHeaders(),
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message ||
+        "Failed to fetch bookmarked roadmaps."
+    );
+  }
+
+  return data;
+}
+
+/*
+|--------------------------------------------------------------------------
 | Add Bookmark
 |--------------------------------------------------------------------------
 */

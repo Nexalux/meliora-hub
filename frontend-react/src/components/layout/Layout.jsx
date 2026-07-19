@@ -5,11 +5,11 @@ import {
 
 import { useAuth } from "../../contexts/AuthContext";
 import "../../styles/components/layout.css";
+import UserMenu from "../ui/UserMenu";
 
 function Layout() {
 
-  const { user, logout } = useAuth();
-
+ const { user } = useAuth();
   return (
     <>
       <nav className="navbar">
@@ -39,21 +39,7 @@ function Layout() {
 
             ) : (
 
-              <div className="nav-user">
-                <span className="nav-username">
-
-                  👤 {user.name}
-
-                </span>
-
-                <button
-                  onClick={logout}
-                  className="logout-btn"
-                >
-                  Logout
-                </button>
-
-              </div>
+              <UserMenu />
 
             )}
 
