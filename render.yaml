@@ -52,8 +52,8 @@ services:
           define('FORCE_SSL_ADMIN', true);
           define('WP_ENVIRONMENT_TYPE', 'production');
           if (getenv('RENDER_EXTERNAL_URL')) {
-              define('WP_HOME', untrailingslashit(getenv('RENDER_EXTERNAL_URL')));
-              define('WP_SITEURL', untrailingslashit(getenv('RENDER_EXTERNAL_URL')));
+              define('WP_HOME', rtrim(getenv('RENDER_EXTERNAL_URL'), '/'));
+              define('WP_SITEURL', rtrim(getenv('RENDER_EXTERNAL_URL'), '/'));
           }
           if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false) {
               $_SERVER['HTTPS'] = 'on';
