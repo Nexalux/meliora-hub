@@ -15,6 +15,10 @@ if [[ ! -r /etc/secrets/aiven-ca.pem ]]; then
     exit 1
 fi
 
+runtime_ca_path="/tmp/aiven-ca.pem"
+install -m 0644 /etc/secrets/aiven-ca.pem "${runtime_ca_path}"
+export AIVEN_DB_CA="${runtime_ca_path}"
+
 render_port="${PORT:-10000}"
 
 sed -ri "s/Listen 80/Listen ${render_port}/" /etc/apache2/ports.conf
