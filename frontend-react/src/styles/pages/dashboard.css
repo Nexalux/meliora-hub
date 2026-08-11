@@ -5,6 +5,7 @@
 .dashboard {
   position: relative;
   width: 100%;
+  overflow-x: clip;
   isolation: isolate;
 }
 
@@ -33,9 +34,11 @@
 .dashboard > .container {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .dashboard .dashboard-section {
+  min-width: 0;
   margin-block-end: var(--space-16);
 }
 
