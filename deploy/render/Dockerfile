@@ -14,6 +14,7 @@ RUN apt-get update \
 COPY backend-wordpress/meliora-core/ /usr/src/wordpress/wp-content/plugins/meliora-core/
 COPY deploy/render/meliora-loader.php /usr/src/wordpress/wp-content/mu-plugins/meliora-loader.php
 COPY deploy/render/uploads/ /usr/src/wordpress/wp-content/uploads/
+COPY deploy/render/health.php /usr/src/wordpress/health.php
 COPY deploy/render/start.sh /usr/local/bin/meliora-start
 
 RUN chmod 0755 /usr/local/bin/meliora-start \
