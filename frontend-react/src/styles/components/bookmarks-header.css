@@ -1,0 +1,39 @@
+/* ==========================================
+   Bookmarks Header
+========================================== */
+
+.bookmarks-header {
+
+    margin-bottom: 3.5rem;
+
+}
+
+.bookmarks-header__title {
+
+    margin: 0 0 .75rem;
+
+    color: var(--text-primary);
+
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+
+    font-weight: 750;
+
+    line-height: 1.1;
+
+    letter-spacing: -.02em;
+
+}
+
+.bookmarks-header__description {
+
+    max-width: 680px;
+
+    margin: 0;
+
+    color: var(--text-secondary);
+
+    font-size: 1rem;
+
+    line-height: 1.8;
+
+}

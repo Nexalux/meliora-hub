@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  useNavigate,
-  Link,
-  useLocation,
-} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../contexts/AuthContext";
 
@@ -27,47 +23,86 @@ function Login() {
     try {
       await login(username, password);
 
-      // Remove success message after login
-      navigate("/", { replace: true });
+      const returnPath =
+        typeof location.state?.from === "string" &&
+        location.state.from.startsWith("/")
+          ? location.state.from
+          : "/";
+
+      navigate(returnPath, {
+        replace: true,
+      });
     } catch (err) {
       setError(err.message);
     }
   }
 
   return (
-    <div className="login-page">
-      <div className="login-card">
+    <main className="login-page">
 
-        <h1>Welcome Back!</h1>
+      <div className="login-background"></div>
 
-        <p>
-          Continue your learning journey on
-          Meliora Hub.
-        </p>
+      <section className="login-card">
 
-        <form onSubmit={handleSubmit}>
+        <div className="login-header">
 
-          <input
-            type="text"
-            placeholder="Username"
-            autoComplete="username"
-            value={username}
-            onChange={(e) =>
-              setUsername(e.target.value)
-            }
-            required
-          />
+          <div className="login-badge">
+            MELIORA HUB
+          </div>
 
-          <input
-            type="password"
-            placeholder="Password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
-            required
-          />
+          <h1>Welcome Back</h1>
+
+          <p>
+            Continue your learning journey on
+            Meliora Hub.
+          </p>
+
+        </div>
+
+        <form
+          className="login-form"
+          onSubmit={handleSubmit}
+        >
+
+          <div className="form-group">
+
+            <label htmlFor="username">
+              Username
+            </label>
+
+            <input
+              id="username"
+              type="text"
+              placeholder="Enter your username"
+              autoComplete="username"
+              value={username}
+              onChange={(e) =>
+                setUsername(e.target.value)
+              }
+              required
+            />
+
+          </div>
+
+          <div className="form-group">
+
+            <label htmlFor="password">
+              Password
+            </label>
+
+            <input
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
+              required
+            />
+
+          </div>
 
           {location.state?.success && (
             <div className="login-success">
@@ -92,16 +127,21 @@ function Login() {
 
         </form>
 
-        <div className="login-footer">
-          Don't have an account?
+        <footer className="login-footer">
+
+          <span>
+            Don't have an account?
+          </span>
 
           <Link to="/register">
             Create one
           </Link>
-        </div>
 
-      </div>
-    </div>
+        </footer>
+
+      </section>
+
+    </main>
   );
 }
 

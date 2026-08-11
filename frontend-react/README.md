@@ -1,67 +1,41 @@
-# 🚀 Meliora Hub
+# Meliora Hub frontend
 
-Meliora Hub is an interactive learning platform built with **React**, **WordPress**, and a custom **Meliora Core Plugin**.
+React frontend for Meliora Hub, built with Vite and backed by the WordPress
+REST API in `backend-wordpress/meliora-core`.
 
-The goal is to provide structured learning roadmaps, developer paths, progress tracking, and high-quality learning resources in one place.
+## Local development
 
----
+1. Copy `.env.example` to `.env.local` and adjust the WordPress REST URL if
+   necessary.
+2. Install dependencies with `npm install`.
+3. Start the frontend with `npm run dev`.
 
-## ✨ Features
+## Quality checks
 
-- 📚 Interactive Roadmaps
-- 🛣️ Learning Paths
-- 📖 Step-by-Step Learning
-- 🎯 Progress Tracking
-- 🔗 Curated Resources
-- 👤 User Dashboard
-- 🏆 Achievements & XP (Planned)
-- 🤖 AI Mentor (Planned)
+Run these before committing or deploying:
 
----
+```powershell
+npm run lint
+npm test
+npm run build
+npm audit
+```
 
-## 🛠 Tech Stack
+## Production deployment
 
-### Frontend
-- React
-- Vite
-- React Router
+Set `VITE_WP_REST_URL` to the public WordPress REST root before building:
 
-### Backend
-- WordPress
-- Custom Plugin (Meliora Core)
-- REST API
+```text
+VITE_WP_REST_URL=https://api.example.com/wp-json
+```
 
-### Database
-- MySQL
+Then run `npm run build` and deploy the contents of `dist`.
 
----
+Client-side routes must fall back to `index.html`. The included `public/.htaccess`
+provides that fallback when the built frontend is served by Apache. For Nginx,
+use `try_files $uri $uri/ /index.html;`. Hosting platforms such as Vercel or
+Netlify need the equivalent rewrite rule.
 
-## 📂 Project Structure
-
-MelioraHub/
-
-├── frontend-react/
-
-├── backend-wordpress/
-
-├── docs/
-
-└── README.md
-
----
-
-## 🚧 Current Status
-
-Currently under active development.
-
-Phase 1 ✔ Complete
-
-Phase 2 ✔ Complete
-
-Phase 3 🚧 In Progress
-
----
-
-## 👨‍💻 Author
-
-Tanishq Chaudhary
+If the frontend and WordPress use different origins, add the frontend origin
+to `MH_ALLOWED_ORIGINS` in WordPress as documented in
+`backend-wordpress/README.md`.
