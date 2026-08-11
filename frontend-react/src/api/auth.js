@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:8080/meliorahub/wp-json";
+import api from "./client";
+import { JWT_API_URL } from "./config";
 
 /*
 |--------------------------------------------------------------------------
@@ -7,29 +8,54 @@ const API_URL = "http://localhost:8080/meliorahub/wp-json";
 */
 
 export async function login(username, password) {
-  const response = await fetch(
-    `${API_URL}/jwt-auth/v1/token`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+  try {
+    return await api.post(
+      "/token",
+      {
         username,
         password,
-      }),
+      },
+      {
+        auth: false,
+        baseUrl: JWT_API_URL,
+      }
+    );
+  } catch (error) {
+    const message =
+      (error.message || "")
+        .replace(/<[^>]*>/g, "")
+        .trim();
+
+    if (
+      message.toLowerCase().includes("incorrect") ||
+      message.toLowerCase().includes("invalid")
+    ) {
+
+      throw new Error(
+        "Invalid username or password."
+      );
+
+    }
+
+    throw new Error(message || "Unable to sign in.");
+  }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Validate Session
+|--------------------------------------------------------------------------
+*/
+
+export function validateToken(options = {}) {
+  return api.post(
+    "/token/validate",
+    {},
+    {
+      ...options,
+      baseUrl: JWT_API_URL,
     }
   );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.message || "Login failed."
-    );
-  }
-
-  return data;
 }
 
 /*
@@ -44,29 +70,17 @@ export async function register({
   email,
   password,
 }) {
-  const response = await fetch(
-    "http://localhost:8080/meliorahub/wp-json/meliora/v1/register",
+  // done
+  return api.post(
+    "/register",
     {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
         name,
         username,
         email,
         password,
-      }),
+    },
+    {
+      auth: false,
     }
   );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.message || "Registration failed."
-    );
-  }
-
-  return data;
 }

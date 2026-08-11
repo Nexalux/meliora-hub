@@ -1,30 +1,34 @@
 import { Link } from "react-router-dom";
 import { FaBookmark } from "react-icons/fa6";
 
+import "../../styles/components/empty-bookmarks.css";
+
 function EmptyBookmarks() {
-  return (
-    <section className="empty-bookmarks">
+    return (
+        <section className="empty-bookmarks">
 
-      <div className="empty-icon-wrapper">
-        <FaBookmark className="empty-icon" />
-      </div>
+           <div className="empty-bookmarks__icon-wrapper">
+    <FaBookmark className="empty-bookmarks__icon" />
+</div>
 
-      <h2>No bookmarks yet</h2>
+            <h2 className="empty-bookmarks__title">
+                No bookmarks yet
+            </h2>
 
-      <p>
-        Save your favorite learning paths to build your personal
-        library and continue your journey anytime.
-      </p>
+            <p className="empty-bookmarks__description">
+                Save roadmaps you want to revisit and build your own
+                learning library.
+            </p>
 
-      <Link
-        to="/"
-        className="browse-btn"
-      >
-        Browse Roadmaps
-      </Link>
+            <Link
+                to="/"
+                className="empty-bookmarks__button"
+            >
+                Browse Roadmaps
+            </Link>
 
-    </section>
-  );
+        </section>
+    );
 }
 
 export default EmptyBookmarks;

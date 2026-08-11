@@ -55,31 +55,6 @@ function mh_register_taxonomies()
         ]
 
     ]);
-
-    /*
-    |--------------------------------------------------------------------------
-    | Duration
-    |--------------------------------------------------------------------------
-    */
-
-    register_taxonomy('roadmap_duration', 'roadmap', [
-
-        'labels' => [
-            'name'          => 'Duration',
-            'singular_name' => 'Duration',
-        ],
-
-        'hierarchical'      => true,
-        'public'            => true,
-        'show_ui'           => true,
-        'show_admin_column' => true,
-        'show_in_rest'      => true,
-
-        'rewrite' => [
-            'slug' => 'roadmap-duration'
-        ]
-
-    ]);
 }
 
 add_action('init', 'mh_register_taxonomies');

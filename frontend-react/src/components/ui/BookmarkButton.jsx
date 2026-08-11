@@ -1,79 +1,102 @@
 import {
-  FaRegStar,
-  FaStar,
+    FaRegBookmark,
+    FaBookmark,
 } from "react-icons/fa6";
+import {
+    useLocation,
+    useNavigate,
+} from "react-router-dom";
 
 import { useBookmarks } from "../../contexts/BookmarkContext";
 import { useAuth } from "../../contexts/AuthContext";
 
+import "../../styles/components/bookmark-button.css";
+
 function BookmarkButton({ roadmapId }) {
 
-  const { user } = useAuth();
+    const { user } = useAuth();
+    const location = useLocation();
+    const navigate = useNavigate();
 
-  const {
-    loading,
-    isSaving,
-    isBookmarked,
-    toggleBookmark,
-  } = useBookmarks();
+    const {
+        loading,
+        isSaving,
+        isBookmarked,
+        toggleBookmark,
+    } = useBookmarks();
 
-  /*
-  |--------------------------------------------------------------------------
-  | Hide button for guests
-  |--------------------------------------------------------------------------
-  */
+    const bookmarked =
+        user && isBookmarked(roadmapId);
 
-  if (!user) {
-    return null;
-  }
+    const saving =
+        isSaving(roadmapId);
 
-  const bookmarked =
-    isBookmarked(roadmapId);
+    async function handleClick(e) {
 
-  const saving =
-    isSaving(roadmapId);
+        e.preventDefault();
+        e.stopPropagation();
 
-  async function handleClick(e) {
+        if (!user) {
+            navigate("/login", {
+                state: {
+                    from: `${location.pathname}${location.search}${location.hash}`,
+                },
+            });
+            return;
+        }
 
-    e.preventDefault();
-    e.stopPropagation();
+        if (saving) return;
 
-    if (saving) return;
+        try {
 
-    try {
+            await toggleBookmark(roadmapId);
 
-      await toggleBookmark(roadmapId);
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+        }
 
     }
 
-    catch (error) {
+    return (
 
-      console.error(error);
+        <button
+            className={`bookmark-button ${
+                bookmarked
+                    ? "bookmark-button--active"
+                    : ""
+            }`}
+            onClick={handleClick}
+            disabled={loading || saving}
+            aria-label={
+                !user
+                    ? "Log in to bookmark this roadmap"
+                    : bookmarked
+                    ? "Remove bookmark"
+                    : "Add bookmark"
+            }
+            aria-pressed={Boolean(bookmarked)}
+            title={
+                !user
+                    ? "Log in to bookmark"
+                    : bookmarked
+                    ? "Remove Bookmark"
+                    : "Add Bookmark"
+            }
+        >
 
-    }
+            {bookmarked
 
-  }
+              ? <FaBookmark />
+              : <FaRegBookmark />
+              }
 
-  return (
+        </button>
 
-    <button
-      className="bookmark-btn"
-      onClick={handleClick}
-      disabled={loading || saving}
-      title={
-        bookmarked
-          ? "Remove Bookmark"
-          : "Add Bookmark"
-      }
-    >
-
-      {bookmarked
-        ? <FaStar />
-        : <FaRegStar />}
-
-    </button>
-
-  );
+    );
 
 }
 

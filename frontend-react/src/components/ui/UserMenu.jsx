@@ -65,9 +65,20 @@ function UserMenu() {
 
         <div className="user-dropdown">
   <div className="dropdown-header">
-    <strong><FaUser /> {user.name}</strong>
-    <small>{user.email}</small>
+
+  <div className="dropdown-avatar">
+    <FaUser />
   </div>
+
+  <div className="dropdown-user">
+
+    <strong>{user.name}</strong>
+
+    <small>{user.email}</small>
+
+  </div>
+
+</div>
 
 <NavLink
   to="/dashboard"

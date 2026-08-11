@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import { register } from "../api/auth";
 
 import "../styles/pages/login.css";
@@ -21,6 +21,21 @@ function Register() {
 
   const [error, setError] = useState("");
 
+  const [showPassword, setShowPassword] =
+  useState(false);
+
+const [showConfirmPassword, setShowConfirmPassword] =
+  useState(false);
+
+  function updateField(e) {
+
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+
+  }
+
   async function handleSubmit(e) {
 
     e.preventDefault();
@@ -32,6 +47,7 @@ function Register() {
       setError("Passwords do not match.");
 
       return;
+
     }
 
     try {
@@ -64,70 +80,177 @@ function Register() {
 
   }
 
-  function updateField(e) {
-
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-
-  }
-
   return (
-    <div className="login-page">
 
-      <div className="login-card">
+    <main className="login-page">
 
-        <h1>Create Account</h1>
+      <div className="login-background"></div>
 
-        <p>
-          Join Meliora Hub and start your learning journey.
-        </p>
+      <section className="login-card">
 
-        <form onSubmit={handleSubmit}>
+        <div className="login-header">
 
-          <input
-            name="name"
-            placeholder="Full Name"
-            value={form.name}
-            onChange={updateField}
-            required
-          />
+          <div className="login-badge">
+            MELIORA HUB
+          </div>
 
-          <input
-            name="username"
-            placeholder="Username"
-            value={form.username}
-            onChange={updateField}
-            required
-          />
+          <h1>Create Account</h1>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={updateField}
-            required
-          />
+          <p>
+            Join Meliora Hub and start your learning journey.
+          </p>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={updateField}
-            required
-          />
+        </div>
 
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={form.confirmPassword}
-            onChange={updateField}
-            required
-          />
+        <form
+          className="login-form"
+          onSubmit={handleSubmit}
+        >
+
+          <div className="form-group">
+
+            <label htmlFor="name">
+              Full Name
+            </label>
+
+            <input
+              id="name"
+              name="name"
+              placeholder="Enter your full name"
+              value={form.name}
+              onChange={updateField}
+              autoComplete="name"
+              required
+            />
+
+          </div>
+
+          <div className="form-group">
+
+            <label htmlFor="username">
+              Username
+            </label>
+
+            <input
+              id="username"
+              name="username"
+              placeholder="Choose a username"
+              value={form.username}
+              onChange={updateField}
+              autoComplete="username"
+              required
+            />
+
+          </div>
+
+          <div className="form-group">
+
+            <label htmlFor="email">
+              Email Address
+            </label>
+
+            <input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              value={form.email}
+              onChange={updateField}
+              autoComplete="email"
+              required
+            />
+
+          </div>
+
+          <div className="form-group">
+
+  <label htmlFor="password">
+    Password
+  </label>
+
+  <div className="password-input">
+
+    <input
+      id="password"
+      type={
+        showPassword
+          ? "text"
+          : "password"
+      }
+      name="password"
+      placeholder="Create a password"
+      value={form.password}
+      onChange={updateField}
+      autoComplete="new-password"
+      required
+    />
+
+    <button
+      type="button"
+      className="password-toggle"
+      onClick={() =>
+        setShowPassword(!showPassword)
+      }
+      aria-label={
+        showPassword
+          ? "Hide password"
+          : "Show password"
+      }
+    >
+      {showPassword
+        ? <FiEyeOff />
+        : <FiEye />}
+    </button>
+
+  </div>
+
+</div>
+
+          <div className="form-group">
+
+  <label htmlFor="confirmPassword">
+    Confirm Password
+  </label>
+
+  <div className="password-input">
+
+    <input
+      id="confirmPassword"
+      type={
+        showConfirmPassword
+          ? "text"
+          : "password"
+      }
+      name="confirmPassword"
+      placeholder="Confirm your password"
+      value={form.confirmPassword}
+      onChange={updateField}
+      autoComplete="new-password"
+      required
+    />
+
+    <button
+      type="button"
+      className="password-toggle"
+      onClick={() =>
+        setShowConfirmPassword(
+          !showConfirmPassword
+        )
+      }
+      aria-label={
+        showConfirmPassword
+          ? "Hide password"
+          : "Show password"
+      }
+    >
+      {showConfirmPassword
+        ? <FiEyeOff />
+        : <FiEye />}
+    </button>
+
+  </div>
+
+</div>
 
           {error && (
             <div className="login-error">
@@ -140,26 +263,30 @@ function Register() {
             disabled={loading}
           >
             {loading
-              ? "Creating..."
+              ? "Creating Account..."
               : "Create Account"}
           </button>
 
         </form>
 
-        <div className="login-footer">
+        <footer className="login-footer">
 
-          Already have an account?
+          <span>
+            Already have an account?
+          </span>
 
           <Link to="/login">
             Sign In
           </Link>
 
-        </div>
+        </footer>
 
-      </div>
+      </section>
 
-    </div>
+    </main>
+
   );
+
 }
 
 export default Register;
