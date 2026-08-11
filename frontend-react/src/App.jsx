@@ -13,6 +13,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Bookmarks from "./pages/Bookmarks";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -31,6 +32,11 @@ function App() {
           <Route
             path="/roadmap/:id"
             element={<RoadmapDetails />}
+          />
+
+          <Route
+            path="*"
+            element={<NotFound />}
           />
 
         </Route>

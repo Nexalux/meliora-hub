@@ -1,70 +1,154 @@
-/* ===========================
+/* ==========================================
    Activity Item
-=========================== */
-
-.activity-list {
-
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-
-}
+========================================== */
 
 .activity-item {
 
     display: flex;
-    align-items: center;
-    gap: 18px;
-    padding: 20px 24px;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    transition:
-        transform .3s ease,
-        border-color .3s ease;
+    align-items: flex-start;
+    gap: 1rem;
+
+    padding: 1.25rem 0;
+
+    border-bottom: 1px solid var(--border-color);
 
 }
 
-.activity-item:hover {
+.activity-item:last-child {
 
-    transform: translateX(6px);
-    border-color: var(--primary-color);
+    border-bottom: none;
 
 }
 
-.activity-icon {
+/* ==========================================
+   Icon
+========================================== */
 
-    width: 50px;
-    height: 50px;
+.activity-item__icon {
+
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
-    background: rgba(59,130,246,.12);
-    color: var(--primary-color);
-    font-size: 1.2rem;
+
     flex-shrink: 0;
 
+    width: 44px;
+    height: 44px;
+
+    border-radius: 50%;
+
+    font-size: 1rem;
+
+    transition: all .25s ease;
+
 }
 
-.activity-content {
+/* Completed */
 
-    display: flex;
-    flex-direction: column;
+.activity-item--completed .activity-item__icon {
+
+    background: rgba(34, 197, 94, .12);
+
+    color: #22c55e;
 
 }
 
-.activity-title {
+/* Bookmark */
+
+.activity-item--bookmark .activity-item__icon {
+
+    background: rgba(168, 85, 247, .12);
+
+    color: #a855f7;
+
+}
+
+/* Opened */
+
+.activity-item--opened .activity-item__icon {
+
+    background: rgba(14, 165, 233, .12);
+
+    color: #0ea5e9;
+
+}
+
+/* ==========================================
+   Content
+========================================== */
+
+.activity-item__content {
+
+    flex: 1;
+
+}
+
+.activity-item__title {
+
+    margin: 0 0 .35rem;
+
+    color: var(--text-primary);
 
     font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 6px;
 
 }
 
-.activity-time {
+.activity-item__description {
+
+    margin: 0;
 
     color: var(--text-secondary);
+
     font-size: .9rem;
+    line-height: 1.6;
+
+}
+
+/* ==========================================
+   Time
+========================================== */
+
+.activity-item__time {
+
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+
+    flex-shrink: 0;
+
+    color: var(--text-secondary);
+
+    font-size: .85rem;
+
+}
+
+/* ==========================================
+   Hover
+========================================== */
+
+.activity-item:hover .activity-item__icon {
+
+    transform: scale(1.08);
+
+}
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width:768px) {
+
+    .activity-item {
+
+        gap: .75rem;
+
+    }
+
+    .activity-item__time {
+
+        display: none;
+
+    }
 
 }

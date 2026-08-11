@@ -1,14 +1,4 @@
-const API_BASE =
-  "http://localhost:8080/meliorahub/wp-json/meliora/v1";
-
-function getAuthHeaders() {
-  const token = localStorage.getItem("token");
-
-  return {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  };
-}
+import api from "./client";
 
 /*
 |--------------------------------------------------------------------------
@@ -16,23 +6,8 @@ function getAuthHeaders() {
 |--------------------------------------------------------------------------
 */
 
-export async function getBookmarks() {
-  const response = await fetch(
-    `${API_BASE}/bookmarks`,
-    {
-      headers: getAuthHeaders(),
-    }
-  );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.message || "Failed to fetch bookmarks."
-    );
-  }
-
-  return data;
+export function getBookmarks(options = {}) {
+  return api.get("/bookmarks", options);
 }
 
 /*
@@ -41,24 +16,8 @@ export async function getBookmarks() {
 |--------------------------------------------------------------------------
 */
 
-export async function getBookmarkedRoadmaps() {
-  const response = await fetch(
-    `${API_BASE}/bookmarks/roadmaps`,
-    {
-      headers: getAuthHeaders(),
-    }
-  );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.message ||
-        "Failed to fetch bookmarked roadmaps."
-    );
-  }
-
-  return data;
+export function getBookmarkedRoadmaps(options = {}) {
+  return api.get("/bookmarks/roadmaps", options);
 }
 
 /*
@@ -67,27 +26,10 @@ export async function getBookmarkedRoadmaps() {
 |--------------------------------------------------------------------------
 */
 
-export async function addBookmark(roadmapId) {
-  const response = await fetch(
-    `${API_BASE}/bookmarks`,
-    {
-      method: "POST",
-      headers: getAuthHeaders(),
-      body: JSON.stringify({
-        roadmap_id: roadmapId,
-      }),
-    }
-  );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.message || "Failed to add bookmark."
-    );
-  }
-
-  return data;
+export function addBookmark(roadmapId) {
+  return api.post("/bookmarks", {
+    roadmap_id: roadmapId,
+  });
 }
 
 /*
@@ -96,22 +38,6 @@ export async function addBookmark(roadmapId) {
 |--------------------------------------------------------------------------
 */
 
-export async function removeBookmark(roadmapId) {
-  const response = await fetch(
-    `${API_BASE}/bookmarks/${roadmapId}`,
-    {
-      method: "DELETE",
-      headers: getAuthHeaders(),
-    }
-  );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.message || "Failed to remove bookmark."
-    );
-  }
-
-  return data;
+export function removeBookmark(roadmapId) {
+  return api.delete(`/bookmarks/${roadmapId}`);
 }

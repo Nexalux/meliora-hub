@@ -1,32 +1,114 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import {
+  useCallback,
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react";
 
-import { login as loginRequest } from "../api/auth";
+import {
+  login as loginRequest,
+  validateToken,
+} from "../api/auth";
+import { AUTH_EXPIRED_EVENT } from "../api/client";
 
 const AuthContext = createContext();
+
+function getStoredUser() {
+  const savedUser = localStorage.getItem("mh_user");
+
+  if (!savedUser) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(savedUser);
+  } catch {
+    localStorage.removeItem("mh_user");
+    return null;
+  }
+}
 
 export function AuthProvider({ children }) {
 
   const [token, setToken] = useState(() =>
-    localStorage.getItem("token")
+    localStorage.getItem("mh_token")
   );
 
-  const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem("user");
+  const [user, setUser] = useState(getStoredUser);
 
-    return savedUser
-      ? JSON.parse(savedUser)
-      : null;
-  });
+  const [initializing, setInitializing] = useState(
+    () => Boolean(localStorage.getItem("mh_token"))
+  );
+  const [authenticating, setAuthenticating] = useState(false);
 
-  const [loading, setLoading] = useState(false);
+  const logout = useCallback(() => {
 
-  async function login(username, password) {
+    localStorage.removeItem("mh_token");
+    localStorage.removeItem("mh_user");
 
-    setLoading(true);
+    setToken(null);
+    setUser(null);
+
+  }, []);
+
+  useEffect(() => {
+
+    function handleExpiredSession() {
+      logout();
+    }
+
+    globalThis.addEventListener(
+      AUTH_EXPIRED_EVENT,
+      handleExpiredSession
+    );
+
+    return () => {
+      globalThis.removeEventListener(
+        AUTH_EXPIRED_EVENT,
+        handleExpiredSession
+      );
+    };
+
+  }, [logout]);
+
+  useEffect(() => {
+
+    let active = true;
+    const controller = new AbortController();
+    const storedToken = localStorage.getItem("mh_token");
+    const storedUser = getStoredUser();
+
+    if (!storedToken || !storedUser) {
+      logout();
+      setInitializing(false);
+      return undefined;
+    }
+
+    validateToken({ signal: controller.signal })
+      .catch(() => {
+        if (active) {
+          logout();
+        }
+      })
+      .finally(() => {
+        if (active) {
+          setInitializing(false);
+        }
+      });
+
+    return () => {
+      active = false;
+      controller.abort();
+    };
+
+  }, [logout]);
+
+  const login = useCallback(async (username, password) => {
+
+    setAuthenticating(true);
 
     try {
 
@@ -42,12 +124,12 @@ export function AuthProvider({ children }) {
       };
 
       localStorage.setItem(
-        "token",
+        "mh_token",
         data.token
       );
 
       localStorage.setItem(
-        "user",
+        "mh_user",
         JSON.stringify(userData)
       );
 
@@ -58,28 +140,18 @@ export function AuthProvider({ children }) {
 
     } finally {
 
-      setLoading(false);
+      setAuthenticating(false);
 
     }
 
-  }
-
-  function logout() {
-
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-
-    setToken(null);
-    setUser(null);
-
-  }
+  }, []);
 
   return (
     <AuthContext.Provider
       value={{
         user,
         token,
-        loading,
+        loading: initializing || authenticating,
         login,
         logout,
       }}
@@ -91,5 +163,15 @@ export function AuthProvider({ children }) {
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error(
+      "useAuth must be used inside AuthProvider."
+    );
+  }
+
+  return context;
+
 }

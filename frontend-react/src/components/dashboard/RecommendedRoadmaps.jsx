@@ -1,29 +1,42 @@
 import RoadmapCard from "../cards/RoadmapCard";
+import DashboardEmpty from "./DashboardEmpty";
+
+import { FaCompass } from "react-icons/fa";
 
 function RecommendedRoadmaps({ roadmaps = [] }) {
+
     if (roadmaps.length === 0) {
-        return null;
+
+        return (
+
+            <DashboardEmpty
+                icon={<FaCompass />}
+                title="No recommendations yet"
+                description="Complete a few roadmaps and bookmark your interests to receive personalized recommendations."
+            />
+
+        );
+
     }
 
     return (
-        <section className="dashboard-section">
 
-            <h2>Recommended For You</h2>
+        <div className="recommendation-grid">
 
-            <div className="recommendation-grid">
+            {roadmaps.slice(0, 3).map((roadmap) => (
 
-                {roadmaps.map((roadmap) => (
-                    <RoadmapCard
-                        key={roadmap.id}
-                        roadmap={roadmap}
-                        variant="home"
-                    />
-                ))}
+                <RoadmapCard
+                    key={roadmap.id}
+                    roadmap={roadmap}
+                    variant="home"
+                />
 
-            </div>
+            ))}
 
-        </section>
+        </div>
+
     );
+
 }
 
 export default RecommendedRoadmaps;

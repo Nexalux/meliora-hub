@@ -1,371 +1,408 @@
-import RoadmapCard from "../components/cards/RoadmapCard";
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import RoadmapCard from "../components/cards/RoadmapCard";
 import { getRoadmaps } from "../api/roadmaps";
+import ContinueLearning from "../components/home/ContinueLearning";
+import HomeSkeleton from "../components/skeletons/HomeSkeleton";
 import "../styles/pages/home.css";
 
 function Home() {
-  const [roadmaps, setRoadmaps] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+    const [roadmaps, setRoadmaps] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-  const [searchInput, setSearchInput] = useState("");
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [activeDifficulty, setActiveDifficulty] = useState("All");
-  const [currentPage, setCurrentPage] = useState(1);
+    const [searchInput, setSearchInput] = useState("");
+    const [activeCategory, setActiveCategory] = useState("All");
+    const [activeDifficulty, setActiveDifficulty] = useState("All");
+    const [currentPage, setCurrentPage] = useState(1);
 
-  const perPage = 9;
+    const perPage = 6;
 
-  useEffect(() => {
-    async function loadRoadmaps() {
-      try {
-        setError("");
-        setLoading(true);
+    useEffect(() => {
+        let active = true;
+        const controller = new AbortController();
 
-        const data = await getRoadmaps();
-        setRoadmaps(data);
-      } catch (err) {
-        setError(err.message || "Failed to fetch roadmaps");
-      } finally {
-        setLoading(false);
-      }
-    }
+        async function loadRoadmaps() {
+            try {
+                setLoading(true);
+                setError("");
 
-    loadRoadmaps();
-  }, []);
+                const data = await getRoadmaps({
+                    signal: controller.signal,
+                });
 
-  const categories = useMemo(() => {
-    const unique = new Map();
+                if (active) {
+                    setRoadmaps(data);
+                }
+            } catch (err) {
+                if (active) {
+                    setError(
+                        err.message || "Failed to fetch roadmaps"
+                    );
+                }
+            } finally {
+                if (active) {
+                    setLoading(false);
+                }
+            }
+        }
 
-    roadmaps.forEach((roadmap) => {
-      if (roadmap.category) {
-        unique.set(roadmap.category.name, roadmap.category.name);
-      }
-    });
+        loadRoadmaps();
 
-    return ["All", ...unique.values()];
-  }, [roadmaps]);
+        return () => {
+            active = false;
+            controller.abort();
+        };
+    }, []);
 
-  const difficulties = useMemo(() => {
-    const unique = new Map();
+    const categories = useMemo(() => {
+        const unique = new Map();
 
-    roadmaps.forEach((roadmap) => {
-      if (roadmap.difficulty) {
-        unique.set(roadmap.difficulty.name, roadmap.difficulty.name);
-      }
-    });
-
-    return ["All", ...unique.values()];
-  }, [roadmaps]);
-
-  const filteredRoadmaps = useMemo(() => {
-    return roadmaps.filter((roadmap) => {
-      const title = roadmap.title || "";
-      const shortDescription = roadmap.data?.basic?.short_description || "";
-
-      const matchesSearch =
-        title.toLowerCase().includes(searchInput.toLowerCase()) ||
-        shortDescription.toLowerCase().includes(searchInput.toLowerCase());
-
-      const matchesCategory =
-        activeCategory === "All" ||
-        roadmap.category?.name === activeCategory;
-
-      const matchesDifficulty =
-        activeDifficulty === "All" ||
-        roadmap.difficulty?.name === activeDifficulty;
-
-      return matchesSearch && matchesCategory && matchesDifficulty;
-    });
-  }, [roadmaps, searchInput, activeCategory, activeDifficulty]);
-
-  const totalPages = Math.max(1, Math.ceil(filteredRoadmaps.length / perPage));
-
-  const paginatedRoadmaps = useMemo(() => {
-    const start = (currentPage - 1) * perPage;
-    return filteredRoadmaps.slice(start, start + perPage);
-  }, [filteredRoadmaps, currentPage]);
-
-  function resetPage() {
-    setCurrentPage(1);
-  }
-
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, [activeCategory, activeDifficulty, searchInput, currentPage]);
-
-  if (loading) {
-    return (
-      <div className="page">
-        <div className="grid">
-          {[...Array(9)].map((_, i) => (
-            <div key={i} className="skeleton-card" />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-  return (
-    <div className="page">
-      <div className="empty-state">
-        <h3>Something went wrong</h3>
-        <p>{error}</p>
-
-      </div>
-    </div>
-  );
-
-}
-
-  return (
-    <div className="page">
-      
-{/* ================= HERO ================= */}
-
-<section className="hero">
-
-  <div className="hero-content">
-
-    <span className="hero-label">
-      MELIORA HUB
-    </span>
-
-    <h1 className="hero-title">
-      Master Tech Skills
-      <br />
-      Through Structured Roadmaps
-    </h1>
-
-    <p className="hero-subtitle">
-      Learn modern technologies through carefully
-      structured roadmaps designed for beginners,
-      intermediate learners and professionals.
-    </p>
-
-    <input
-      type="text"
-      className="hero-search"
-      placeholder="Search roadmaps..."
-      value={searchInput}
-      onChange={(e) => {
-        setSearchInput(e.target.value);
-        resetPage();
-      }}
-    />
-
-  </div>
-
-</section>
-
-      {/* CONTINUE LEARNING */}
-      {(() => {
-        const startedRoadmaps = roadmaps.filter((roadmap) => {
-         const completed = JSON.parse(
-  localStorage.getItem(`progress-${roadmap.id}`) || "{}"
-);
-
-const completedCount =
-  Object.values(completed).filter(Boolean).length;
-
-return completedCount > 0;
+        roadmaps.forEach((roadmap) => {
+            if (roadmap.category) {
+                unique.set(
+                    roadmap.category.name,
+                    roadmap.category.name
+                );
+            }
         });
 
-        if (startedRoadmaps.length === 0) return null;
+        return ["All", ...unique.values()];
+    }, [roadmaps]);
 
-        return (
-          <div className="continue-section">
-            <h2 className="section-title">Continue Learning</h2>
+    const difficulties = useMemo(() => {
+        const unique = new Map();
+        const preferredOrder = [
+            "Beginner",
+            "Intermediate",
+            "Advanced",
+        ];
 
-            <div className="continue-grid">
-              {startedRoadmaps.map((roadmap) => {
-                const completed = JSON.parse(
-  localStorage.getItem(`progress-${roadmap.id}`) || "{}"
-);
-
-const completedCount =
-  Object.values(completed).filter(Boolean).length;
-
-const totalSteps =
-  roadmap.data?.steps?.length || 1;
-
-const progress = Math.round(
-  (completedCount / totalSteps) * 100
-);
-
-                return (
-                  <Link
-                    key={roadmap.id}
-                    to={`/roadmap/${roadmap.id}`}
-                    className="continue-card"
-                  >
-                    <div className="continue-top">
-                      <h3>{roadmap.title}</h3>
-
-                      <span className="continue-percent">
-                        {progress}%
-                      </span>
-                    </div>
-
-                    <div className="continue-progress-bar">
-                      <div
-                        className="continue-progress-fill"
-                        style={{ width: `${progress}%` }}
-                      />
-                    </div>
-                  </Link>
+        roadmaps.forEach((roadmap) => {
+            if (roadmap.difficulty) {
+                unique.set(
+                    roadmap.difficulty.name,
+                    roadmap.difficulty.name
                 );
-              })}
-            </div>
-          </div>
+            }
+        });
+
+        const availableDifficulties = [...unique.values()];
+
+        availableDifficulties.sort((a, b) => {
+            const aIndex = preferredOrder.indexOf(a);
+            const bIndex = preferredOrder.indexOf(b);
+
+            if (aIndex === -1 && bIndex === -1) {
+                return a.localeCompare(b);
+            }
+
+            if (aIndex === -1) return 1;
+            if (bIndex === -1) return -1;
+
+            return aIndex - bIndex;
+        });
+
+        return ["All", ...availableDifficulties];
+    }, [roadmaps]);
+
+    const filteredRoadmaps = useMemo(() => {
+        return roadmaps.filter((roadmap) => {
+            const title = roadmap.title || "";
+            const description =
+                roadmap.short_description
+                    ?.replace(/<[^>]+>/g, "")
+                    .replace(/\s+/g, " ")
+                    .trim() || "";
+
+            const matchesSearch =
+                title
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase()) ||
+                description
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase());
+
+            const matchesCategory =
+                activeCategory === "All" ||
+                roadmap.category?.name === activeCategory;
+
+            const matchesDifficulty =
+                activeDifficulty === "All" ||
+                roadmap.difficulty?.name === activeDifficulty;
+
+            return (
+                matchesSearch &&
+                matchesCategory &&
+                matchesDifficulty
+            );
+        });
+    }, [
+        roadmaps,
+        searchInput,
+        activeCategory,
+        activeDifficulty,
+    ]);
+
+    const totalPages = Math.max(
+        1,
+        Math.ceil(filteredRoadmaps.length / perPage)
+    );
+
+    const paginatedRoadmaps = useMemo(() => {
+        const start = (currentPage - 1) * perPage;
+
+        return filteredRoadmaps.slice(
+            start,
+            start + perPage
         );
-      })()}
+    }, [
+        filteredRoadmaps,
+        currentPage,
+    ]);
 
-      {/* ================= BROWSE SECTION ================= */}
+    function resetPage() {
+        setCurrentPage(1);
+    }
 
-<section className="browse-section">
-  <div className="browse-header">
+    if (error) {
+        return (
+            <div className="page home-page">
+                <div className="empty-state">
+                    <h3>Something went wrong</h3>
+                    <p>{error}</p>
+                </div>
+            </div>
+        );
+    }
 
-    <h2>
-      Browse Roadmaps
-    </h2>
+    return (
+        <div className="page home-page">
 
-    <p>
-      Discover structured learning paths based on your
-      interests and experience level.
-    </p>
+            {/* ================= HERO ================= */}
 
-  </div>
+            <section className="hero">
 
-  <div className="filter-group">
+                <div className="hero-content">
 
-    <span className="filter-title">
-      Categories
-    </span>
+                    <span className="hero-label">
+                        MELIORA HUB
+                    </span>
 
-    <div className="category-grid">
+                    <h1 className="hero-title">
+                        Master Tech Skills
+                        <br />
+                        Through Structured Roadmaps
+                    </h1>
 
-      {categories.map((cat) => (
+                    <p className="hero-subtitle">
+                        Learn modern technologies
+                        through carefully structured
+                        roadmaps designed for beginners,
+                        intermediate learners and
+                        professionals.
+                    </p>
 
-        <button
-          key={cat}
-          className={`filter-btn ${
-            activeCategory === cat
-              ? "active"
-              : ""
-          }`}
-          onClick={() => {
-            setActiveCategory(cat);
-            resetPage();
-          }}
-        >
-          {cat}
-        </button>
+                    <input
+                        type="text"
+                        className="hero-search"
+                        placeholder="Search roadmaps..."
+                        value={searchInput}
+                        onChange={(event) => {
+                            setSearchInput(event.target.value);
+                            resetPage();
+                        }}
+                    />
 
-      ))}
+                </div>
 
-    </div>
+            </section>
 
-  </div>
+            <ContinueLearning
+                roadmaps={roadmaps}
+                loading={loading}
+            />
 
-  <div className="filter-group">
+            {loading ? (
 
-    <span className="filter-title">
-      Difficulty
-    </span>
+                <HomeSkeleton />
 
-    <div className="filters">
+            ) : (
 
-      {difficulties.map((diff) => (
+                <>
 
-        <button
-          key={diff}
-          className={`filter-btn ${
-            activeDifficulty === diff
-              ? "active"
-              : ""
-          }`}
-          onClick={() => {
-            setActiveDifficulty(diff);
-            resetPage();
-          }}
-        >
-          {diff === "All"
-            ? "All Levels"
-            : diff}
-        </button>
+                    {/* ================= BROWSE SECTION ================= */}
 
-      ))}
+                    <section className="browse-section">
 
-    </div>
+                        <div className="browse-header">
 
-  </div>
+                            <h2>
+                                Browse Roadmaps
+                            </h2>
 
-</section>
+                            <p>
+                                Discover structured learning paths based on
+                                your interests and experience level.
+                            </p>
 
-{/* RESULTS */}
+                        </div>
 
-<div className="results-bar">
-  <p className="results-count">
+                        <div className="filter-group">
 
-    Showing <strong>{filteredRoadmaps.length}</strong>{" "}
+                            <span className="filter-title">
+                                Categories
+                            </span>
 
-    {filteredRoadmaps.length === 1
-      ? "Roadmap"
-      : "Roadmaps"}
+                            <div className="category-grid">
 
-  </p>
+                                {categories.map((category) => (
 
-</div>
+                                    <button
+                                        key={category}
+                                        className={`filter-btn ${
+                                            activeCategory === category
+                                                ? "active"
+                                                : ""
+                                        }`}
+                                        onClick={() => {
+                                            setActiveCategory(category);
+                                            resetPage();
+                                        }}
+                                    >
+                                        {category}
+                                    </button>
 
-      {/* ROADMAP GRID */}
+                                ))}
 
-      {paginatedRoadmaps.length === 0 ? (
+                            </div>
 
-        <div className="empty-state">
-         <h3>No roadmaps found</h3>
-         <p> Try changing your search or filters. </p>
-         </div>
+                        </div>
+                                                <div className="filter-group">
 
-      ) : (
-        <div className="grid">
-          {paginatedRoadmaps.map((roadmap) => (
-  <RoadmapCard
-    key={roadmap.id}
-    roadmap={roadmap}
-  />
-))}
+                            <span className="filter-title">
+                                Difficulty
+                            </span>
+
+                            <div className="filters">
+
+                                {difficulties.map((difficulty) => (
+
+                                    <button
+                                        key={difficulty}
+                                        className={`filter-btn ${
+                                            activeDifficulty === difficulty
+                                                ? "active"
+                                                : ""
+                                        }`}
+                                        onClick={() => {
+                                            setActiveDifficulty(difficulty);
+                                            resetPage();
+                                        }}
+                                    >
+                                        {difficulty === "All"
+                                            ? "All Levels"
+                                            : difficulty}
+                                    </button>
+
+                                ))}
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                    {/* ================= RESULTS ================= */}
+
+                    <div className="results-bar">
+
+                        <p className="results-count">
+                            Showing{" "}
+                            <strong>
+                                {filteredRoadmaps.length}
+                            </strong>{" "}
+                            {filteredRoadmaps.length === 1
+                                ? "Roadmap"
+                                : "Roadmaps"}
+                        </p>
+
+                    </div>
+
+                    {/* ================= ROADMAP GRID ================= */}
+
+                    {paginatedRoadmaps.length === 0 ? (
+
+                        <div className="empty-state">
+
+                            <h3>
+                                No roadmaps found
+                            </h3>
+
+                            <p>
+                                Try changing your search or filters.
+                            </p>
+
+                        </div>
+
+                    ) : (
+
+                        <div className="grid">
+
+                            {paginatedRoadmaps.map((roadmap) => (
+
+                                <RoadmapCard
+                                    key={roadmap.id}
+                                    roadmap={roadmap}
+                                />
+
+                            ))}
+
+                        </div>
+
+                    )}
+
+                    {/* ================= PAGINATION ================= */}
+
+                    {totalPages > 1 && (
+
+                        <div className="pagination">
+
+                            <button
+                                disabled={currentPage <= 1}
+                                onClick={() =>
+                                    setCurrentPage(
+                                        (page) => page - 1
+                                    )
+                                }
+                            >
+                                Previous
+                            </button>
+
+                            <span>
+                                Page {currentPage} of {totalPages}
+                            </span>
+
+                            <button
+                                disabled={currentPage >= totalPages}
+                                onClick={() =>
+                                    setCurrentPage(
+                                        (page) => page + 1
+                                    )
+                                }
+                            >
+                                Next
+                            </button>
+
+                        </div>
+
+                    )}
+
+                </>
+
+            )}
+
         </div>
-      )}
-
-      {/* PAGINATION */}
-      {totalPages > 1 && (
-        <div className="pagination">
-          <button
-            disabled={currentPage <= 1}
-            onClick={() => setCurrentPage((page) => page - 1)}
-          >
-            Previous
-          </button>
-
-          <span>
-            Page {currentPage} of {totalPages}
-          </span>
-
-          <button
-            disabled={currentPage >= totalPages}
-            onClick={() => setCurrentPage((page) => page + 1)}
-          >
-            Next
-          </button>
-        </div>
-      )}
-    </div>
-  );
+    );
 }
 
 export default Home;

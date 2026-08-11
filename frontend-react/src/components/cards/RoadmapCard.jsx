@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import {
-  FaArrowRight,
-  FaClock,
-  FaSignal,
-  FaBookOpen,
+    FaArrowRight,
+    FaBookOpen,
+    FaClock,
+    FaSignal,
 } from "react-icons/fa6";
 
 import BookmarkButton from "../ui/BookmarkButton";
@@ -11,100 +11,104 @@ import BookmarkButton from "../ui/BookmarkButton";
 import "../../styles/components/roadmap-card.css";
 
 function RoadmapCard({
-  roadmap,
-  variant = "home",
+    roadmap,
+    variant = "home",
 }) {
-  const description =
-    roadmap.short_description?.trim() ||
-    roadmap.data?.basic?.short_description?.trim() ||
+
+   const description =
+    roadmap.short_description
+        ?.replace(/<[^>]*>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim() ||
     "No description available yet.";
 
-  const totalSteps =
-    roadmap.steps_count ??
-    roadmap.data?.steps?.length ??
-    0;
+    const totalSteps =
+        roadmap.steps_count ??
+        roadmap.steps?.length ??
+        0;
 
-  const difficulty =
-    roadmap.difficulty?.name || null;
+    const difficulty =
+        roadmap.difficulty?.name ?? null;
 
-  const duration =
-    roadmap.duration_text ||
-    (typeof roadmap.duration === "string"
-    ? roadmap.duration
-    : roadmap.duration?.name) ||
-    null;
+    const duration =
+        typeof roadmap.duration === "string"
+            ? roadmap.duration
+            : roadmap.duration?.name ?? null;
 
-  const buttonText =
-    variant === "bookmark"
-      ? "Continue Learning"
-      : "Start Learning";
+    const buttonText =
+        variant === "bookmark"
+            ? "Continue Learning"
+            : "Start Learning";
 
-  return (
-    <article className="roadmap-card">
-      {/* Bookmark */}
+    return (
 
-      <div className="roadmap-bookmark">
-        <BookmarkButton roadmapId={roadmap.id} />
-      </div>
+        <article className="roadmap-card">
 
-      {/* Clickable Card */}
+            <div className="roadmap-card__bookmark">
 
-      <Link
-        to={`/roadmap/${roadmap.id}`}
-        className="roadmap-card-link"
-      >
-        <div className="roadmap-card-accent" />
+                <BookmarkButton roadmapId={roadmap.id} />
 
-        <div className="roadmap-card-content">
+            </div>
 
-          <h3 className="roadmap-card-title">
-            {roadmap.title}
-          </h3>
+            <Link
+                to={`/roadmap/${roadmap.id}`}
+                className="roadmap-card__link"
+                aria-label={`Open roadmap: ${roadmap.title}`}
+            >
 
-          <p className="roadmap-card-description">
-            {description}
-          </p>
+                <div className="roadmap-card__content">
 
-          <div className="roadmap-card-tags">
+                    <h3 className="roadmap-card__title">
+                        {roadmap.title}
+                    </h3>
 
-            {difficulty && (
-              <span className="roadmap-tag">
-                <FaSignal />
-                <span>{difficulty}</span>
-              </span>
-            )}
+                    <p className="roadmap-card__description">
+                        {description}
+                    </p>
 
-            {duration && (
-              <span className="roadmap-tag">
-                <FaClock />
-                <span>{duration}</span>
-              </span>
-            )}
+                    <div className="roadmap-card__tags">
 
-            {totalSteps > 0 && (
-              <span className="roadmap-tag">
-                <FaBookOpen />
-                <span>{totalSteps} Steps</span>
-              </span>
-            )}
+                        {difficulty && (
+                            <span className="roadmap-tag">
+                                <FaSignal />
+                                <span>{difficulty}</span>
+                            </span>
+                        )}
 
-          </div>
+                        {duration && (
+                            <span className="roadmap-tag">
+                                <FaClock />
+                                <span>{duration}</span>
+                            </span>
+                        )}
 
-        </div>
+                        {totalSteps > 0 && (
+                            <span className="roadmap-tag">
+                                <FaBookOpen />
+                                <span>{totalSteps} Steps</span>
+                            </span>
+                        )}
 
-        <div className="roadmap-card-footer">
+                    </div>
 
-          <span className="roadmap-link">
-            {buttonText}
-          </span>
+                </div>
 
-          <FaArrowRight className="roadmap-arrow" />
+                <footer className="roadmap-card__footer">
 
-        </div>
+                    <span className="roadmap-card__cta">
+                        {buttonText}
+                    </span>
 
-      </Link>
-    </article>
-  );
+                    <FaArrowRight className="roadmap-card__arrow" />
+
+                </footer>
+
+            </Link>
+
+        </article>
+
+    );
+
 }
 
 export default RoadmapCard;
