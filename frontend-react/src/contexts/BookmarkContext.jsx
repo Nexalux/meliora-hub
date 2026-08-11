@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import {
   createContext,
   useContext,
@@ -25,6 +27,7 @@ export function BookmarkProvider({ children }) {
 
   useEffect(() => {
     let active = true;
+    const controller = new AbortController();
 
     async function loadBookmarks() {
       if (!user) {
@@ -36,7 +39,9 @@ export function BookmarkProvider({ children }) {
       setLoading(true);
 
       try {
-        const data = await getBookmarks();
+        const data = await getBookmarks({
+          signal: controller.signal,
+        });
 
         if (active) {
           setBookmarks(Array.isArray(data) ? data : []);
@@ -58,6 +63,7 @@ export function BookmarkProvider({ children }) {
 
     return () => {
       active = false;
+      controller.abort();
     };
   }, [user]);
 

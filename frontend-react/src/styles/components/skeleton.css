@@ -1,0 +1,396 @@
+/* ==========================================
+   Skeleton System
+========================================== */
+
+.skeleton {
+    position: relative;
+    overflow: hidden;
+
+    background: var(--skeleton-bg);
+    border-radius: 8px;
+}
+
+.skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--skeleton-highlight),
+        transparent
+    );
+
+    animation: skeleton-shimmer 1.4s infinite;
+}
+
+/* ==========================================
+   Shimmer
+========================================== */
+
+.skeleton::after {
+
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+
+   background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, .08),
+        transparent
+    );
+
+    animation: skeleton-shimmer 1.6s ease-in-out infinite;
+
+}
+
+@keyframes skeleton-shimmer {
+
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+
+}
+
+/* ==========================================
+   Generic Shapes
+========================================== */
+
+.skeleton--circle {
+    flex-shrink: 0;
+    border-radius: 50%;
+
+}
+
+.skeleton--pill {
+    border-radius: 999px;
+
+}
+
+.skeleton--button {
+    width: 7.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-lg);
+
+}
+
+/* ==========================================
+   Text Placeholders
+========================================== */
+
+.skeleton__title {
+    width: 68%;
+    height: 1.5rem;
+
+}
+
+.skeleton__title--small {
+    width: 48%;
+    height: 1.125rem;
+
+}
+
+.skeleton__title--large {
+    width: min(32rem, 82%);
+    height: 2.5rem;
+
+}
+
+.skeleton__line {
+    width: 100%;
+    height: 0.875rem;
+
+}
+
+.skeleton__line--medium {
+    width: 76%;
+
+}
+
+.skeleton__line--short {
+    width: 52%;
+
+}
+
+/* ==========================================
+   Filter Placeholders
+========================================== */
+
+.skeleton__filter {
+    width: 100px;
+    height: 40px;
+    border-radius: 999px;
+}
+
+.skeleton__filter--wide {
+    width: 8.5rem;
+
+}
+
+.skeleton__filter-title {
+    width: 110px;
+    height: 18px;
+    border-radius: 999px;
+    margin-bottom: 1rem;
+}
+
+/* ==========================================
+   Results Placeholder
+========================================== */
+
+.skeleton__results {
+    width: 180px;
+    height: 18px;
+    border-radius: 999px;
+}
+
+/* ==========================================
+   Tag Placeholders
+========================================== */
+
+.skeleton__tags {
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+
+}
+
+.skeleton__tag {
+
+    width: 4.5rem;
+    height: 1.625rem;
+    border-radius: 999px;
+
+}
+
+.skeleton__tag--small {
+    width: 3.5rem;
+
+}
+
+.skeleton__tag--large {
+    width: 5.5rem;
+
+}
+
+/* ==========================================================
+   SKELETON CARD
+========================================================== */
+
+.skeleton-card {
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 205px;
+    padding: 20px;
+    padding-right: 64px;
+    background: #111827;
+    border: 1px solid #26354b;
+    border-radius: 18px;
+    overflow: hidden;
+
+}
+
+.skeleton-card__bookmark {
+
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+
+}
+
+.skeleton-card__content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+}
+
+.skeleton-card__title {
+
+    width: 68%;
+    height: 18px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+
+}
+
+.skeleton-card__description {
+    margin-bottom: 18px;
+
+}
+
+.skeleton-card__line {
+
+    width: 100%;
+    height: 10px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+
+}
+
+.skeleton-card__line--short {
+    width: 62%;
+
+}
+
+.skeleton-card__tags {
+    display: flex;
+    gap: 10px;
+
+}
+
+.skeleton-card__tag {
+    height: 24px;
+    border-radius: 999px;
+
+}
+
+.skeleton-card__tag--first {
+    width: 54px;
+
+}
+
+.skeleton-card__tag--second {
+    width: 46px;
+
+}
+
+.skeleton-card__tag--third {
+    width: 64px;
+
+}
+
+.skeleton-card__bottom {
+
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 18px;
+
+}
+
+.skeleton-card__bottom-text {
+
+    width: 58px;
+    height: 10px;
+    border-radius: 999px;
+
+}
+.skeleton-card__bottom-icon {
+
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+
+}
+
+/* ==========================================
+   Skeleton Grid
+========================================== */
+
+.skeleton__grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(300px, 1fr)
+        );
+
+    gap: var(--space-7);
+
+}
+
+/* ==========================================
+   Accessibility
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .skeleton::after {
+
+        animation: none;
+
+    }
+
+}
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width: 768px) {
+
+    .skeleton__title--large {
+
+        width: 90%;
+        height: 2rem;
+
+    }
+
+    .skeleton-card {
+
+        min-height: 200px;
+        padding: 18px;
+        padding-right: 56px;
+
+    }
+
+    .skeleton__grid {
+
+        grid-template-columns: 1fr;
+        gap: 20px;
+
+    }
+
+    .skeleton__filter {
+
+        width: 92px;
+        height: 40px;
+
+    }
+
+    .skeleton__filter--wide {
+        width: 120px;
+
+    }
+
+    .skeleton-card__bookmark {
+
+        width: 26px;
+        height: 26px;
+        top: 14px;
+        right: 14px;
+
+    }
+
+    .skeleton-card__title {
+        width: 65%;
+
+    }
+
+    .skeleton-card__tag {
+        height: 22px;
+
+    }
+
+}

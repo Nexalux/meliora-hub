@@ -1,155 +1,244 @@
+import { useEffect, useState } from "react";
+
 import "../styles/pages/dashboard.css";
+
+import { getDashboardData } from "../api/dashboard";
 
 import ActivityItem from "../components/dashboard/ActivityItem";
 import ContinueLearningCard from "../components/dashboard/ContinueLearningCard";
+import DashboardEmpty from "../components/dashboard/DashboardEmpty";
 import RecommendedRoadmaps from "../components/dashboard/RecommendedRoadmaps";
 import StatCard from "../components/dashboard/StatCard";
+
+import DashboardHero from "../components/dashboard/DashboardHero";
+import DashboardSkeleton from "../components/skeletons/DashboardSkeleton";
+import Section from "../components/common/Section";
 
 import {
     FaBookOpen,
     FaBookmark,
     FaCheckCircle,
     FaFire,
-    FaRocket,
+    FaHistory,
 } from "react-icons/fa";
 
-function Dashboard() {
-    const activities = [
-        {
-            id: 1,
-            icon: <FaCheckCircle />,
-            title: 'Completed "HTML & CSS Basics"',
-            time: "Today • 20 minutes ago",
-        },
-        {
-            id: 2,
-            icon: <FaBookmark />,
-            title: 'Bookmarked "Docker Essentials"',
-            time: "Yesterday",
-        },
-        {
-            id: 3,
-            icon: <FaRocket />,
-            title: 'Started "React Fundamentals"',
-            time: "2 days ago",
-        },
-    ];
+const decodeHtmlEntities = (value) => {
+    if (typeof value !== "string") return value;
 
-    const recommendedRoadmaps = [
-        {
-            id: 1,
-            title: "React Development",
-            short_description:
-                "Master React from fundamentals to advanced concepts.",
-            difficulty: "Intermediate",
-            duration: "2 Months",
-            steps_count: 18,
-            featured_image:
-                "https://placehold.co/600x400?text=React",
-        },
-        {
-            id: 2,
-            title: "Docker Essentials",
-            short_description:
-                "Learn containers, images, and modern Docker workflows.",
-            difficulty: "Beginner",
-            duration: "3 Weeks",
-            steps_count: 10,
-            featured_image:
-                "https://placehold.co/600x400?text=Docker",
-        },
-        {
-            id: 3,
-            title: "Node.js Backend",
-            short_description:
-                "Build scalable REST APIs using Node.js and Express.",
-            difficulty: "Intermediate",
-            duration: "6 Weeks",
-            steps_count: 14,
-            featured_image:
-                "https://placehold.co/600x400?text=Node.js",
-        },
-    ];
+    return value
+        .replace(/&amp;/gi, "&")
+        .replace(/&#038;/gi, "&")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/&quot;/gi, '"')
+        .replace(/&#039;/gi, "'")
+        .replace(/&lt;/gi, "<")
+        .replace(/&gt;/gi, ">");
+};
+
+function Dashboard() {
+
+    const [dashboard, setDashboard] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+
+        let active = true;
+        const controller = new AbortController();
+
+        async function loadDashboard() {
+
+            try {
+
+                setError(null);
+
+                const data = await getDashboardData({
+                    signal: controller.signal,
+                });
+
+                if (active) {
+                    setDashboard(data);
+                }
+
+            } catch (err) {
+
+                console.error("Failed to load dashboard:", err);
+
+                if (active) {
+
+                    setError(
+                        err.message ||
+                        "Failed to load dashboard."
+                    );
+
+                }
+
+            } finally {
+
+                if (active) {
+                    setLoading(false);
+                }
+
+            }
+
+        }
+
+        loadDashboard();
+
+        return () => {
+            active = false;
+            controller.abort();
+        };
+
+    }, []);
+
+    if (loading) {
+    return <DashboardSkeleton />;
+}
+
+    if (error) {
+
+        return (
+            <main className="page dashboard">
+                <div className="container">
+
+                    <div className="dashboard-error-state">
+
+                        <h2>Something went wrong</h2>
+
+                        <p>{error}</p>
+
+                    </div>
+
+                </div>
+            </main>
+        );
+
+    }
+
+    const stats = dashboard?.stats ?? {};
+
+    const activities = Array.isArray(dashboard?.activities)
+        ? dashboard.activities
+        : [];
+
+    const recommendations = Array.isArray(
+        dashboard?.recommendations
+    )
+        ? dashboard.recommendations
+        : [];
 
     return (
-        <main className="dashboard">
 
-            {/* Hero */}
-            <section className="dashboard-hero">
-                <h1>👋 Welcome back!</h1>
+        <main className="page dashboard">
 
-                <p>
-                    Continue building your future, one roadmap at a time.
-                </p>
-            </section>
+            <div className="container">
 
-            {/* Overview */}
-            <section className="dashboard-section">
+                <DashboardHero />
 
-                <h2>Overview</h2>
+                <Section
+                    className="dashboard-section"
+                    title="Overview"
+                >
 
-                <div className="stats-grid">
+                    <div className="dashboard__overview">
 
-                    <StatCard
-                        icon={<FaBookOpen />}
-                        title="Roadmaps"
-                        value="12"
-                    />
-
-                    <StatCard
-                        icon={<FaBookmark />}
-                        title="Bookmarks"
-                        value="6"
-                    />
-
-                    <StatCard
-                        icon={<FaCheckCircle />}
-                        title="Completed"
-                        value="84"
-                    />
-
-                    <StatCard
-                        icon={<FaFire />}
-                        title="Streak"
-                        value="7 Days"
-                    />
-
-                </div>
-
-            </section>
-
-            {/* Continue Learning */}
-            <section className="dashboard-section">
-                <ContinueLearningCard />
-            </section>
-
-            {/* Recent Activity */}
-            <section className="dashboard-section">
-
-                <h2>Recent Activity</h2>
-
-                <div className="activity-list">
-
-                    {activities.map((activity) => (
-                        <ActivityItem
-                            key={activity.id}
-                            icon={activity.icon}
-                            title={activity.title}
-                            time={activity.time}
+                        <StatCard
+                            icon={<FaBookOpen />}
+                            title="Total Roadmaps"
+                            value={stats.roadmaps ?? 0}
+                            subtitle="Available to explore"
                         />
-                    ))}
 
-                </div>
+                        <StatCard
+                            icon={<FaBookmark />}
+                            title="Bookmarks"
+                            value={stats.bookmarks ?? 0}
+                            subtitle="Saved for later"
+                        />
 
-            </section>
+                        <StatCard
+                            icon={<FaCheckCircle />}
+                            title="Completed Steps"
+                            value={stats.completed ?? 0}
+                            subtitle="Across all roadmaps"
+                        />
 
-            {/* Recommended Roadmaps */}
-            <RecommendedRoadmaps
-                roadmaps={recommendedRoadmaps}
-            />
+                        <StatCard
+                            icon={<FaFire />}
+                            title="Current Streak"
+                            value={`${stats.streak ?? 0} Days`}
+                            subtitle="Keep it going!"
+                        />
+
+                    </div>
+
+                </Section>
+
+                <Section
+                    className="dashboard-section"
+                    title="Continue Learning"
+                >
+
+                    <ContinueLearningCard
+                        roadmap={dashboard?.continue_learning}
+                    />
+
+                </Section>
+
+                <Section
+                    className="dashboard-section"
+                    title="Recent Activity"
+                >
+
+                    <div className="activity-list">
+
+                        {activities.length > 0 ? (
+
+                            activities.map((activity) => (
+
+                                <ActivityItem
+                                    key={activity.id}
+                                    activity={{
+                                        ...activity,
+                                        title: decodeHtmlEntities(activity.title),
+                                        description: decodeHtmlEntities(activity.description),
+                                    }}
+                                />
+
+                            ))
+
+                        ) : (
+
+                            <DashboardEmpty
+                                icon={<FaHistory />}
+                                title="No recent activity"
+                                description="Your learning activity will appear here once you start completing roadmaps and lessons."
+                            />
+
+                        )}
+
+                    </div>
+
+                </Section>
+
+                <Section
+                    className="dashboard-section"
+                    title="Recommended For You"
+                >
+
+                    <RecommendedRoadmaps
+                        roadmaps={recommendations}
+                    />
+
+                </Section>
+
+            </div>
 
         </main>
+
     );
+
 }
 
 export default Dashboard;

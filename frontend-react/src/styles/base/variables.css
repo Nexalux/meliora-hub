@@ -1,0 +1,228 @@
+/* ==========================================================
+   Meliora Hub Design System
+========================================================== */
+
+:root {
+
+    /* ======================================================
+       Brand
+    ====================================================== */
+
+    --primary-color: #38bdf8;
+    --primary-hover: #0ea5e9;
+    --primary-soft: rgba(56, 189, 248, 0.12);
+
+    /* ======================================================
+       Backgrounds
+    ====================================================== */
+
+    --background: #0f172a;
+
+    --surface-1: #111827;
+    --surface-2: #172033;
+    --surface-3: #1e293b;
+
+    /*
+     * Semantic surface tokens.
+     * Use these inside components when possible.
+     */
+
+    --surface: #111c35;
+    --card-bg: #16213e;
+
+    --surface-color: var(--surface);
+    --surface-elevated: var(--card-bg);
+    --surface-nested: var(--surface-3);
+
+    /* ======================================================
+       Borders
+    ====================================================== */
+
+    --border-default: #24324d;
+    --border-hover: #38bdf8;
+    --border-focus: #7dd3fc;
+
+    /* Compatibility alias */
+
+    --border-color: var(--border-default);
+
+    /* ======================================================
+       Text
+    ====================================================== */
+
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    /* ======================================================
+       Status
+    ====================================================== */
+
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #38bdf8;
+
+    /* ======================================================
+       Tags
+    ====================================================== */
+
+    --tag-bg: var(--surface-3);
+    --tag-border: #334155;
+    --tag-text: #cbd5e1;
+
+    /* ======================================================
+       Secondary Buttons
+    ====================================================== */
+
+    --button-secondary-bg: var(--surface-2);
+    --button-secondary-hover: var(--surface-3);
+    --button-secondary-border: #334155;
+    --button-secondary-text: var(--text-secondary);
+
+    /* ======================================================
+       Radius
+    ====================================================== */
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-pill: 999px;
+
+    /* Compatibility alias */
+
+    --radius: 18px;
+
+    /* ======================================================
+       Spacing
+    ====================================================== */
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+
+    /* ======================================================
+       Shadows
+    ====================================================== */
+
+    --shadow-sm:
+        0 2px 8px rgba(0, 0, 0, 0.12);
+
+    --shadow-md:
+        0 10px 24px rgba(0, 0, 0, 0.20);
+
+    --shadow-lg:
+        0 18px 40px rgba(0, 0, 0, 0.28);
+
+    --shadow-primary:
+        0 0 0 1px rgba(56, 189, 248, 0.08),
+        0 18px 40px rgba(0, 0, 0, 0.28);
+
+    /* ======================================================
+       Motion
+    ====================================================== */
+
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.25s ease;
+    --transition-slow: 0.35s ease;
+
+    /* ======================================================
+       Skeletons
+    ======================================================= */
+
+    --skeleton-bg: #1c2940;
+    --skeleton-highlight: rgba(255, 255, 255, 0.06);
+}
+
+/* ==========================================================
+   Reset
+========================================================== */
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ==========================================================
+   Document
+========================================================== */
+
+html {
+    min-height: 100%;
+    background: var(--background);
+}
+
+body,
+#root {
+    min-height: 100vh;
+}
+
+/* ==========================================================
+   Base
+========================================================== */
+
+body {
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background: var(--background);
+    color: var(--text-primary);
+
+    line-height: 1.5;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================
+   Links
+========================================================== */
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ==========================================================
+   Form Elements
+========================================================== */
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    color: inherit;
+}
+
+/* ==========================================================
+   Media
+========================================================== */
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}

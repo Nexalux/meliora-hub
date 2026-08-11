@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/meliorahub/wp-json/meliora/v1";
+import api from "./client";
 
 /*
 |--------------------------------------------------------------------------
@@ -6,14 +6,8 @@ const API_URL = "http://localhost:8080/meliorahub/wp-json/meliora/v1";
 |--------------------------------------------------------------------------
 */
 
-export async function getRoadmaps() {
-    const response = await fetch(`${API_URL}/roadmaps`);
-
-    if (!response.ok) {
-        throw new Error("Failed to fetch roadmaps.");
-    }
-
-    return await response.json();
+export function getRoadmaps(options = {}) {
+    return api.get("/roadmaps", options);
 }
 
 /*
@@ -22,14 +16,6 @@ export async function getRoadmaps() {
 |--------------------------------------------------------------------------
 */
 
-export async function getRoadmap(id) {
-    const response = await fetch(`${API_URL}/roadmaps/${id}`);
-
-    if (!response.ok) {
-        throw new Error("Failed to fetch roadmap.");
-    }
-
-    return await response.json();
+export function getRoadmap(id, options = {}) {
+    return api.get(`/roadmaps/${id}`, options);
 }
-
-export default API_URL;

@@ -17,6 +17,8 @@ Thumbs.db
 # Environment
 .env
 .env.*
+!.env.example
+!**/.env.example
 
 # XAMPP
 backend-wordpress/wp-config.php
@@ -27,8 +29,8 @@ backend-wordpress/wp-content/uploads/
 # Cache
 backend-wordpress/wp-content/cache/
 
+# Local deployment backups
+backups/
+
 # Vendor
 vendor/
-
-# npm
-package-lock.json

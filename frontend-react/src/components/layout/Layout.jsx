@@ -4,7 +4,7 @@ import {
 } from "react-router-dom";
 
 import { useAuth } from "../../contexts/AuthContext";
-import "../../styles/components/layout.css";
+import "../../styles/components/navbar.css";
 import UserMenu from "../ui/UserMenu";
 
 function Layout() {
