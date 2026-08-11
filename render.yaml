@@ -1,0 +1,60 @@
+services:
+  - type: web
+    name: meliora-hub-api
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./deploy/render/Dockerfile
+    healthCheckPath: /wp-json/
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: AIVEN_DB_HOST
+        sync: false
+      - key: AIVEN_DB_PORT
+        sync: false
+      - key: WORDPRESS_DB_HOST
+        value: 127.0.0.1:3306
+      - key: WORDPRESS_DB_NAME
+        sync: false
+      - key: WORDPRESS_DB_USER
+        sync: false
+      - key: WORDPRESS_DB_PASSWORD
+        sync: false
+      - key: WORDPRESS_TABLE_PREFIX
+        value: mh_
+      - key: MH_ALLOWED_ORIGINS
+        sync: false
+      - key: JWT_AUTH_SECRET_KEY
+        generateValue: true
+      - key: WORDPRESS_AUTH_KEY
+        generateValue: true
+      - key: WORDPRESS_SECURE_AUTH_KEY
+        generateValue: true
+      - key: WORDPRESS_LOGGED_IN_KEY
+        generateValue: true
+      - key: WORDPRESS_NONCE_KEY
+        generateValue: true
+      - key: WORDPRESS_AUTH_SALT
+        generateValue: true
+      - key: WORDPRESS_SECURE_AUTH_SALT
+        generateValue: true
+      - key: WORDPRESS_LOGGED_IN_SALT
+        generateValue: true
+      - key: WORDPRESS_NONCE_SALT
+        generateValue: true
+      - key: WORDPRESS_CONFIG_EXTRA
+        value: |
+          define('JWT_AUTH_SECRET_KEY', getenv('JWT_AUTH_SECRET_KEY'));
+          define('JWT_AUTH_CORS_ENABLE', true);
+          define('MH_ALLOWED_ORIGINS', array_values(array_filter(array_map('trim', explode(',', getenv('MH_ALLOWED_ORIGINS') ?: '')))));
+          define('DISALLOW_FILE_EDIT', true);
+          define('DISALLOW_FILE_MODS', true);
+          define('FORCE_SSL_ADMIN', true);
+          define('WP_ENVIRONMENT_TYPE', 'production');
+          if (getenv('RENDER_EXTERNAL_URL')) {
+              define('WP_HOME', untrailingslashit(getenv('RENDER_EXTERNAL_URL')));
+              define('WP_SITEURL', untrailingslashit(getenv('RENDER_EXTERNAL_URL')));
+          }
+          if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false) {
+              $_SERVER['HTTPS'] = 'on';
+          }

@@ -34,7 +34,21 @@ Then run `npm run build` and deploy the contents of `dist`.
 Client-side routes must fall back to `index.html`. The included `public/.htaccess`
 provides that fallback when the built frontend is served by Apache. For Nginx,
 use `try_files $uri $uri/ /index.html;`. Hosting platforms such as Vercel or
-Netlify need the equivalent rewrite rule.
+Netlify need the equivalent rewrite rule. The included `public/_redirects`
+provides the fallback for Cloudflare Pages.
+
+For Cloudflare Pages, use:
+
+- Root directory: `frontend-react`
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Environment variable: `VITE_WP_REST_URL=https://<backend-domain>/wp-json`
+
+The no-card portfolio deployment uses the Render backend URL here, for example:
+
+```text
+VITE_WP_REST_URL=https://meliora-hub-api.onrender.com/wp-json
+```
 
 If the frontend and WordPress use different origins, add the frontend origin
 to `MH_ALLOWED_ORIGINS` in WordPress as documented in
