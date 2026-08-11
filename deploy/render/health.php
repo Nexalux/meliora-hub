@@ -35,7 +35,23 @@ if ($host !== '' && $port > 0 && $user !== '' && $databaseName !== '') {
     $connected = false;
 }
 
-if (!$connected || mysqli_query($connection, 'SELECT 1') === false) {
+if (!$connected) {
+    error_log(sprintf(
+        'Meliora database health connection failed (%d): %s',
+        mysqli_connect_errno(),
+        mysqli_connect_error()
+    ));
+    http_response_code(503);
+    echo json_encode(['status' => 'unavailable']);
+    exit;
+}
+
+if (mysqli_query($connection, 'SELECT 1') === false) {
+    error_log(sprintf(
+        'Meliora database health query failed (%d): %s',
+        mysqli_errno($connection),
+        mysqli_error($connection)
+    ));
     http_response_code(503);
     echo json_encode(['status' => 'unavailable']);
     exit;

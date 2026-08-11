@@ -24,8 +24,6 @@ services:
         value: mh_
       - key: MH_ALLOWED_ORIGINS
         sync: false
-      - key: WP_DEBUG
-        value: "false"
       - key: JWT_AUTH_SECRET_KEY
         generateValue: true
       - key: WORDPRESS_AUTH_KEY
@@ -53,7 +51,6 @@ services:
           define('DISALLOW_FILE_MODS', true);
           define('FORCE_SSL_ADMIN', true);
           define('WP_ENVIRONMENT_TYPE', 'production');
-          define('WP_DEBUG', filter_var(getenv('WP_DEBUG') ?: 'false', FILTER_VALIDATE_BOOLEAN));
           define('WP_DEBUG_DISPLAY', false);
           define('WP_DEBUG_LOG', 'php://stderr');
           if (getenv('RENDER_EXTERNAL_URL')) {
