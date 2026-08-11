@@ -39,10 +39,7 @@ function mh_create_learning_table()
 
         PRIMARY KEY (id),
 
-        UNIQUE KEY unique_learning (
-            user_id,
-            step_uuid
-        ),
+        UNIQUE KEY unique_learning (user_id, step_uuid),
 
         KEY user_id (user_id),
 
