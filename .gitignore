@@ -20,6 +20,9 @@ Thumbs.db
 !.env.example
 !**/.env.example
 
+# Local deployment secrets
+deploy/render/.secrets/
+
 # XAMPP
 backend-wordpress/wp-config.php
 

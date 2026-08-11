@@ -68,3 +68,17 @@ jobs:
           -name '*.php'
           -print0 |
           xargs -0 -n1 php -l
+
+      - name: Check deployment loader syntax
+        run: php -l deploy/render/meliora-loader.php
+
+  deployment-image:
+    name: Render deployment image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build WordPress image
+        run: docker build --file deploy/render/Dockerfile --tag meliora-hub-api:ci .
