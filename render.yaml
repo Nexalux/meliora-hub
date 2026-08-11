@@ -13,7 +13,7 @@ services:
       - key: AIVEN_DB_PORT
         sync: false
       - key: WORDPRESS_DB_HOST
-        value: 127.0.0.1:3306
+        sync: false
       - key: WORDPRESS_DB_NAME
         sync: false
       - key: WORDPRESS_DB_USER
