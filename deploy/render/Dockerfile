@@ -3,7 +3,7 @@ FROM wordpress:php8.3-apache
 ARG JWT_AUTH_VERSION=1.5.0
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y stunnel4 unzip \
+    && apt-get install --no-install-recommends -y unzip \
     && curl --fail --location --silent --show-error \
         "https://downloads.wordpress.org/plugin/jwt-authentication-for-wp-rest-api.${JWT_AUTH_VERSION}.zip" \
         --output /tmp/jwt-auth.zip \
@@ -13,6 +13,7 @@ RUN apt-get update \
 
 COPY backend-wordpress/meliora-core/ /usr/src/wordpress/wp-content/plugins/meliora-core/
 COPY deploy/render/meliora-loader.php /usr/src/wordpress/wp-content/mu-plugins/meliora-loader.php
+COPY deploy/render/db.php /usr/src/wordpress/wp-content/db.php
 COPY deploy/render/uploads/ /usr/src/wordpress/wp-content/uploads/
 COPY deploy/render/health.php /usr/src/wordpress/health.php
 COPY deploy/render/start.sh /usr/local/bin/meliora-start
