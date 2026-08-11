@@ -10,10 +10,25 @@ import BookmarkButton from "../ui/BookmarkButton";
 
 import "../../styles/components/roadmap-card.css";
 
+const decodeHtmlEntities = (value) => {
+    if (typeof value !== "string") return value;
+
+    return value
+        .replace(/&amp;/gi, "&")
+        .replace(/&#038;/gi, "&")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/&quot;/gi, '"')
+        .replace(/&#039;/gi, "'")
+        .replace(/&lt;/gi, "<")
+        .replace(/&gt;/gi, ">");
+};
+
 function RoadmapCard({
     roadmap,
     variant = "home",
 }) {
+
+    const title = decodeHtmlEntities(roadmap.title);
 
    const description =
     roadmap.short_description
@@ -53,13 +68,13 @@ function RoadmapCard({
             <Link
                 to={`/roadmap/${roadmap.id}`}
                 className="roadmap-card__link"
-                aria-label={`Open roadmap: ${roadmap.title}`}
+                aria-label={`Open roadmap: ${title}`}
             >
 
                 <div className="roadmap-card__content">
 
                     <h3 className="roadmap-card__title">
-                        {roadmap.title}
+                        {title}
                     </h3>
 
                     <p className="roadmap-card__description">
