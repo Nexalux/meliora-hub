@@ -165,7 +165,7 @@ function mh_render_steps($post)
                         </span>
                         <span class="mh-step-title-preview"><?php echo esc_html(!empty($step['title']) ? $step['title'] : 'New Step'); ?></span>
                     </span>
-                    <span>â–¼</span>
+                    <span aria-hidden="true">&#9660;</span>
                 </button>
 
                 <div class="mh-step-body">
@@ -246,7 +246,7 @@ function mh_render_steps($post)
     </div>
 
     <p class="mh-step-actions">
-        <button type="button" id="mh-add-step" class="button button-primary">âž• Add Step</button>
+        <button type="button" id="mh-add-step" class="button button-primary">+ Add Step</button>
     </p>
     <?php
 }

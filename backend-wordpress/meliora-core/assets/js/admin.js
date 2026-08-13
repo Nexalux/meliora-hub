@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         /*
         |--------------------------------------------------------------------------
-        | New Step â†’ Empty UUID
+        | New Step -> Empty UUID
         |--------------------------------------------------------------------------
         |
         | SaveRoadmap.php will generate a new UUID when
@@ -435,11 +435,11 @@ function normalizeClipboardText(text) {
 
     return text
 
-        // Windows â†’ Unix
+        // Windows -> Unix
         .replace(/\r\n/g, "\n")
 
         // Convert bullets
-        .replace(/[â€¢â–ªâ—¦â—]\s*/g, "- ")
+        .replace(/[\u2022\u25AA\u25E6\u25CF]\s*/g, "- ")
 
         // Collapse excessive blank lines
         .replace(/\n{3,}/g, "\n\n")

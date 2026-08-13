@@ -1,31 +1,20 @@
-# Development Roadmap
+# Future roadmap
 
-## Phase 1
-- Plugin Structure
-- Custom Post Types
-- Taxonomies
+The portfolio release is complete. The items below are optional directions for
+future versions rather than unfinished requirements.
 
-## Phase 2
-- Meta Boxes
-- Roadmap Model
-- Admin UI
+## Product ideas
 
-## Phase 3
-- Step Builder
-- Resources
-- Drag & Drop
+- Achievement badges and shareable completion certificates.
+- Personalized recommendation scoring based on learning history.
+- Full-text search across steps and resources.
+- Optional AI learning assistant with explicit usage and privacy controls.
+- Email reminders and configurable learning goals.
 
-## Phase 4
-- REST API
-- React Integration
+## Engineering ideas
 
-## Phase 5
-- Authentication
-- Dashboard
-- Progress Tracking
-
-## Phase 6
-- Gamification
-
-## Phase 7
-- AI Mentor
+- End-to-end browser tests for authentication and progress flows.
+- Structured observability and frontend error reporting.
+- Automated accessibility and performance budgets in CI.
+- Versioned API contracts and generated schema documentation.
+- A dedicated staging environment for deployment rehearsals.

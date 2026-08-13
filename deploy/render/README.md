@@ -1,4 +1,4 @@
-# No-card deployment
+# Production deployment
 
 Meliora Hub uses three free services:
 
@@ -40,9 +40,9 @@ project's existing media. Its filesystem is intentionally immutable because
 Render's free service discards runtime file changes. Add future plugins and
 media to Git and redeploy instead of installing or uploading them in WP Admin.
 
-## Expected free-tier behavior
+## Hosting-plan behavior
 
-Render spins the backend down after 15 minutes without inbound traffic. The
-first request after that can take approximately one minute while it starts.
-The Aiven free database has 1 GB of storage and can be powered off after
-extended inactivity with advance notice.
+Free hosting plans may suspend idle services, impose resource limits, or change
+their terms. A request after inactivity can therefore be slower while the
+backend starts. Check each provider's current documentation before reproducing
+the deployment or relying on a specific availability target.
