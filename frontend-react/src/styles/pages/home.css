@@ -99,22 +99,95 @@
   line-height: 1.8;
 }
 
-.home-page .hero-search {
-  width: 100%;
-  max-width: 520px;
-  padding: 16px 20px;
-  border: 1px solid var(--home-border);
-  border-radius: 14px;
-  background: var(--home-surface);
+.home-page .hero-search-wrap {
+  width: min(100%, 560px);
+  margin-inline: auto;
+  text-align: left;
+}
+
+.home-page .hero-search-label {
+  display: block;
+  margin-block-end: 9px;
   color: var(--home-text);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.home-page .hero-search-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 58px;
+  padding-inline: 17px;
+  border: 1px solid var(--home-border);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.96), rgba(30, 41, 59, 0.78));
+  box-shadow: 0 12px 28px rgba(2, 6, 23, 0.18);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal), transform var(--transition-normal);
+}
+
+.home-page .hero-search-field:focus-within {
+  border-color: var(--home-accent);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1), 0 16px 32px rgba(2, 6, 23, 0.24);
+  transform: translateY(-2px);
+}
+
+.home-page .hero-search-icon {
+  flex: 0 0 auto;
+  color: var(--home-accent);
+  font-size: 19px;
+}
+
+.home-page .hero-search {
+  min-width: 0;
+  flex: 1;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--home-text);
+  font: inherit;
   font-size: 15px;
-  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.home-page .hero-search::placeholder {
+  color: #7f8da3;
 }
 
 .home-page .hero-search:focus {
-  border-color: var(--home-accent);
   outline: none;
-  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.08);
+}
+
+.home-page .hero-search-clear {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(148, 163, 184, 0.14);
+  color: var(--home-muted);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+}
+
+.home-page .hero-search-clear:hover {
+  background: rgba(56, 189, 248, 0.16);
+  color: var(--home-accent);
+  transform: scale(1.06);
+}
+
+.home-page .hero-search-clear:focus-visible {
+  outline: 2px solid var(--border-focus, #7dd3fc);
+  outline-offset: 2px;
+}
+
+.home-page .hero-search-hint {
+  margin: 9px 0 0 2px;
+  color: var(--home-muted);
+  font-size: 12px;
 }
 
 /* ==========================================================

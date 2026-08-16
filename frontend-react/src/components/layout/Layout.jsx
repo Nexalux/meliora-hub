@@ -2,6 +2,7 @@ import {
   Link,
   Outlet,
 } from "react-router-dom";
+import { FiLogIn } from "react-icons/fi";
 
 import { useAuth } from "../../contexts/AuthContext";
 import "../../styles/components/navbar.css";
@@ -34,7 +35,8 @@ function Layout() {
                 to="/login"
                 className="nav-login"
               >
-                Login
+                <FiLogIn aria-hidden="true" />
+                <span>Log in</span>
               </Link>
 
             ) : (

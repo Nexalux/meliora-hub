@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { FiSearch, FiX } from "react-icons/fi";
 import RoadmapCard from "../components/cards/RoadmapCard";
 import { getRoadmaps } from "../api/roadmaps";
 import ContinueLearning from "../components/home/ContinueLearning";
@@ -202,16 +203,51 @@ function Home() {
                         professionals.
                     </p>
 
-                    <input
-                        type="text"
-                        className="hero-search"
-                        placeholder="Search roadmaps..."
-                        value={searchInput}
-                        onChange={(event) => {
-                            setSearchInput(event.target.value);
-                            resetPage();
-                        }}
-                    />
+                    <div className="hero-search-wrap">
+                        <label
+                            className="hero-search-label"
+                            htmlFor="roadmap-search"
+                        >
+                            Find your next roadmap
+                        </label>
+
+                        <div className="hero-search-field">
+                            <FiSearch
+                                aria-hidden="true"
+                                className="hero-search-icon"
+                            />
+
+                            <input
+                                id="roadmap-search"
+                                type="search"
+                                className="hero-search"
+                                placeholder="Try React, Python, or backend..."
+                                value={searchInput}
+                                onChange={(event) => {
+                                    setSearchInput(event.target.value);
+                                    resetPage();
+                                }}
+                            />
+
+                            {searchInput && (
+                                <button
+                                    type="button"
+                                    className="hero-search-clear"
+                                    aria-label="Clear roadmap search"
+                                    onClick={() => {
+                                        setSearchInput("");
+                                        resetPage();
+                                    }}
+                                >
+                                    <FiX aria-hidden="true" />
+                                </button>
+                            )}
+                        </div>
+
+                        <p className="hero-search-hint">
+                            Search by skill, role, or topic
+                        </p>
+                    </div>
 
                 </div>
 
